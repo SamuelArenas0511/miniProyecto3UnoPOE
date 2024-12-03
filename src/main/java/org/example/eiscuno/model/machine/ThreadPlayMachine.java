@@ -5,7 +5,6 @@ import org.example.eiscuno.model.card.Card;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class ThreadPlayMachine extends Thread {
@@ -38,26 +37,15 @@ public class ThreadPlayMachine extends Thread {
 
     private void putCardOnTheTable() {
         Card card;
-        int counter = 0;
-        ArrayList<Card> machineCards = machinePlayer.getCardsPlayer();
 
-        for (Card a : machineCards) {
-            if (isCardPlayable(a)){
-                card = a;
-                table.addCardOnTheTable(card);
-                tableImageView.setImage(card.getImage());
-                machinePlayer.getCardsPlayer().remove(card);
-                break;
-            } else  {
-                counter++;
-            }
+        do {
+            int index = (int) (Math.random() * machinePlayer.getCardsPlayer().size());
+            card = machinePlayer.getCard(index);
+        } while (!isCardPlayable(card));
 
-            if (counter == machineCards.size()-1){
-
-            }
-        }
-
-
+        table.addCardOnTheTable(card);
+        tableImageView.setImage(card.getImage());
+        machinePlayer.getCardsPlayer().remove(card);
     }
 
     private boolean isCardPlayable(Card card) {

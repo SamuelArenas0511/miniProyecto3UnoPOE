@@ -17,6 +17,7 @@ import org.example.eiscuno.view.GameUnoStage;
 import org.example.eiscuno.view.WelcomeGameUnoStage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Controller class for the Uno game.
@@ -49,6 +50,7 @@ public class GameUnoController {
     public void initialize() {
         initVariables();
         this.gameUno.startGame();
+        printCardTable();
         printCardsHumanPlayer();
         printCardsMachinePlayer();
 
@@ -87,6 +89,10 @@ public class GameUnoController {
         }
     }
 
+    private void printCardTable() {
+        this.gridPaneCardsMachine.getChildren().clear();
+        tableImageView.setImage(table.getCurrentCardOnTheTable().getImage());
+    }
     /**
      * Prints the human player's cards on the grid pane.
      */
@@ -101,11 +107,15 @@ public class GameUnoController {
 
             cardImageView.setOnMouseClicked((MouseEvent event) -> {
                 // Aqui deberian verificar si pueden en la tabla jugar esa carta
-                gameUno.playCard(card);
-                tableImageView.setImage(card.getImage());
-                humanPlayer.removeCard(findPosCardsHumanPlayer(card));
-                threadPlayMachine.setHasPlayerPlayed(true);
-                printCardsHumanPlayer();
+                if (Objects.equals(card.getColor(), table.getCurrentCardOnTheTable().getColor()) ||
+                Objects.equals(card.getValue(), table.getCurrentCardOnTheTable().getValue())
+                        || card.getColor() == null ) {
+                    gameUno.playCard(card);
+                    tableImageView.setImage(card.getImage());
+                    humanPlayer.removeCard(findPosCardsHumanPlayer(card));
+                    threadPlayMachine.setHasPlayerPlayed(true);
+                    printCardsHumanPlayer();
+                }
             });
             this.gridPaneCardsPlayer.add(cardImageView, i, 0);
         }

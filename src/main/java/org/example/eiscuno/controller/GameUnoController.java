@@ -80,7 +80,6 @@ public class GameUnoController {
     private void printCardsMachinePlayer() {
         this.gridPaneCardsMachine.getChildren().clear();
         Card[] currentVisibleCardsMachinePlayer = this.gameUno.getCurrentVisibleCardsMachinePlayer(this.posInitCardToShow);
-
         for (int i = 0; i < currentVisibleCardsMachinePlayer.length; i++) {
             Card card = currentVisibleCardsMachinePlayer[i];
             ImageView cardImageView = card.getCard();
@@ -169,7 +168,9 @@ public class GameUnoController {
      */
     @FXML
     void onHandleTakeCard(ActionEvent event) {
-        // Implement logic to take a card here
+        gameUno.eatCard(humanPlayer,1);
+        printCardsHumanPlayer();
+        threadPlayMachine.setHasPlayerPlayed(true);
     }
 
     /**

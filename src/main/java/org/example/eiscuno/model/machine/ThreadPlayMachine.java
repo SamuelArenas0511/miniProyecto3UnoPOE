@@ -2,15 +2,18 @@ package org.example.eiscuno.model.machine;
 
 import javafx.scene.image.ImageView;
 import org.example.eiscuno.model.card.Card;
+import org.example.eiscuno.model.game.GameUno;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ThreadPlayMachine extends Thread {
     private Table table;
     private Player machinePlayer;
     private ImageView tableImageView;
+    private GameUno gameUno;
     private volatile boolean hasPlayerPlayed;
 
     public ThreadPlayMachine(Table table, Player machinePlayer, ImageView tableImageView) {
@@ -36,16 +39,24 @@ public class ThreadPlayMachine extends Thread {
     }
 
     private void putCardOnTheTable() {
-        Card card;
-
-        do {
-            int index = (int) (Math.random() * machinePlayer.getCardsPlayer().size());
-            card = machinePlayer.getCard(index);
-        } while (!isCardPlayable(card));
-
-        table.addCardOnTheTable(card);
-        tableImageView.setImage(card.getImage());
-        machinePlayer.getCardsPlayer().remove(card);
+        Card card = null;
+        int counter = 0;
+        for (Card iter : machinePlayer.getCardsPlayer()) {
+            if (isCardPlayable(iter)) {
+                card = iter;
+                break;
+            }
+            counter++;
+        }
+        if (card == null) {
+            // No hay cartas jugables: el jugador máquina come una carta
+            gameUno.eatCard(machinePlayer, 1);
+        } else {
+            // Jugar la carta encontrada
+            machinePlayer.removeCard(counter); // Asegúrate de eliminar la carta jugada
+            table.addCardOnTheTable(card);
+            tableImageView.setImage(card.getImage());
+        }
     }
 
     private boolean isCardPlayable(Card card) {

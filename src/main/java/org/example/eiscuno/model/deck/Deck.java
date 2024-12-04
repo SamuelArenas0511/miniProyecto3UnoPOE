@@ -69,13 +69,13 @@ public class Deck {
     }
 
     private String getCardColor(String name){
-        if(name.startsWith("GREEN")){
+        if(name.startsWith("GREEN") || name.endsWith("GREEN")){
             return "GREEN";
-        } else if(name.startsWith("YELLOW")){
+        } else if(name.startsWith("YELLOW") || name.endsWith("YELLOW")){
             return "YELLOW";
-        } else if(name.startsWith("BLUE")){
+        } else if(name.startsWith("BLUE") || name.endsWith("BLUE")){
             return "BLUE";
-        } else if(name.startsWith("RED")){
+        } else if(name.startsWith("RED") || name.endsWith("RED")){
             return "RED";
         } else {
             return null;

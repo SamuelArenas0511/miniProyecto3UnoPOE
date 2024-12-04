@@ -2,10 +2,10 @@ package org.example.eiscuno.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.*;
 import org.example.eiscuno.model.card.Card;
 import org.example.eiscuno.model.deck.Deck;
 import org.example.eiscuno.model.game.GameUno;
@@ -33,6 +33,9 @@ public class GameUnoController {
     @FXML
     private ImageView tableImageView;
 
+    @FXML
+    private BorderPane borderPaneGame;
+
     private Player humanPlayer;
     private Player machinePlayer;
     private Deck deck;
@@ -49,17 +52,19 @@ public class GameUnoController {
     @FXML
     public void initialize() {
         initVariables();
+        setBackgroundImage();
         this.gameUno.startGame();
         printCardTable();
         printCardsHumanPlayer();
-        printCardsMachinePlayer();
 
         threadSingUNOMachine = new ThreadSingUNOMachine(this.humanPlayer.getCardsPlayer());
         Thread t = new Thread(threadSingUNOMachine, "ThreadSingUNO");
         t.start();
 
-        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.tableImageView);
+
+        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.tableImageView, this.gameUno, this.gridPaneCardsMachine);
         threadPlayMachine.start();
+        threadPlayMachine.printCardsMachinePlayer();
     }
 
     /**
@@ -73,23 +78,23 @@ public class GameUnoController {
         this.gameUno = new GameUno(this.humanPlayer, this.machinePlayer, this.deck, this.table);
         this.posInitCardToShow = 0;
     }
-
     /**
-     * Prints the machine player's cards on the grid pane.
+     * Set background Image in the game
      */
-    private void printCardsMachinePlayer() {
-        this.gridPaneCardsMachine.getChildren().clear();
-        Card[] currentVisibleCardsMachinePlayer = this.gameUno.getCurrentVisibleCardsMachinePlayer(this.posInitCardToShow);
-        for (int i = 0; i < currentVisibleCardsMachinePlayer.length; i++) {
-            Card card = currentVisibleCardsMachinePlayer[i];
-            ImageView cardImageView = card.getCard();
-
-            this.gridPaneCardsMachine.add(cardImageView, i, 0);
-        }
+    public void setBackgroundImage() {
+        Image backgroundImage = new Image(getClass().getResource("/org/example/eiscuno/images/backgroud_game.png").toExternalForm());
+        BackgroundImage background = new BackgroundImage(
+                backgroundImage,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(100, 100, true, true, true, false)
+        );
+        borderPaneGame.setBackground(new Background(background));
     }
 
+
     private void printCardTable() {
-        this.gridPaneCardsMachine.getChildren().clear();
         tableImageView.setImage(table.getCurrentCardOnTheTable().getImage());
     }
     /**
@@ -98,7 +103,6 @@ public class GameUnoController {
     private void printCardsHumanPlayer() {
         this.gridPaneCardsPlayer.getChildren().clear();
         Card[] currentVisibleCardsHumanPlayer = this.gameUno.getCurrentVisibleCardsHumanPlayer(this.posInitCardToShow);
-
         for (int i = 0; i < currentVisibleCardsHumanPlayer.length; i++) {
             Card card = currentVisibleCardsHumanPlayer[i];
             ImageView cardImageView = card.getCard();

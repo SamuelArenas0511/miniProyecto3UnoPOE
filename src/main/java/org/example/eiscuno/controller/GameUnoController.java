@@ -52,6 +52,7 @@ public class GameUnoController {
         printCardsHumanPlayer();
         printCardsMachinePlayer();
 
+
         threadSingUNOMachine = new ThreadSingUNOMachine(this.humanPlayer.getCardsPlayer());
         Thread t = new Thread(threadSingUNOMachine, "ThreadSingUNO");
         t.start();

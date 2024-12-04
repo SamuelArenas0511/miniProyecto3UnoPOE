@@ -34,7 +34,7 @@ public class Deck {
                     cardEnum.name().startsWith("TWO_WILD_DRAW_") ||
                     cardEnum.name().equals("FOUR_WILD_DRAW") ||
                     cardEnum.name().equals("WILD")) {
-                Card card = new Card(cardEnum.getFilePath(), getCardValue(cardEnum.name()), getCardColor(cardEnum.name()));
+                Card card = new Card(cardEnum.getFilePath(), getCardValue(cardEnum.name()), getCardColor(cardEnum.name()), getCardType(cardEnum.name()));
                 deckOfCards.push(card);
             }
         }
@@ -78,6 +78,22 @@ public class Deck {
         } else if(name.startsWith("RED") || name.endsWith("RED")){
             return "RED";
         } else {
+            return null;
+        }
+    }
+
+    private String getCardType(String name){
+        if(name.startsWith("TWO_WILD") || name.endsWith("TWO_WILD")){
+            return "TWO_WILD";
+        } else if(name.startsWith("FOUR_WILD") || name.endsWith("FOUR_WILD")){
+            return "FOUR_WILD";
+        } else if(name.startsWith("SKIP") || name.endsWith("SKIP")){
+            return "SKIP";
+        } else if(name.startsWith("RESERVE") || name.endsWith("RESERVE")){
+            return "RESERVE";
+        } else if(name.startsWith("WILD") || name.endsWith("WILD")){
+            return "WILD";
+        }else {
             return null;
         }
     }

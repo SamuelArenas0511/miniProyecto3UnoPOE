@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class ThreadPlayMachine extends Thread {
-    private Table table;
-    private Player machinePlayer;
-    private ImageView tableImageView;
-    private GameUno gameUno;
-    private GridPane gridPaneCardsMachine;
+    private final Table table;
+    private final Player machinePlayer;
+    private final ImageView tableImageView;
+    private final GameUno gameUno;
+    private final GridPane gridPaneCardsMachine;
     private volatile boolean hasPlayerPlayed;
 
     public ThreadPlayMachine(Table table, Player machinePlayer, ImageView tableImageView, GameUno gameUno, GridPane gridPaneCardsMachine) {
@@ -54,11 +54,13 @@ public class ThreadPlayMachine extends Thread {
             counter++;
         }
         if (card == null) {
+            System.out.println("La maquina comio carta");
             // No hay cartas jugables: el jugador máquina come una carta
             Platform.runLater(this::printCardsMachinePlayer);
             gameUno.eatCard(machinePlayer, 1);
         } else {
             // Jugar la carta encontrada
+            System.out.println("La maquina Jugo Carta");
             machinePlayer.removeCard(counter); // Asegúrate de eliminar la carta jugada
             gameUno.playCard(card);
             tableImageView.setImage(card.getImage());
@@ -83,7 +85,7 @@ public class ThreadPlayMachine extends Thread {
 
         return Objects.equals(card.getColor(), currentCard.getColor()) ||
                 Objects.equals(card.getValue(), currentCard.getValue()) ||
-                card.getColor() == null;
+                Objects.equals(card.getType(), "WILD") || Objects.equals(card.getType(), "FOUR_WILD");
     }
 
     public void setHasPlayerPlayed(boolean hasPlayerPlayed) {

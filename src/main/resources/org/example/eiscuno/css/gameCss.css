@@ -17,3 +17,10 @@
     -fx-scale-y: 1.1;
     -fx-effect: dropshadow(gaussian, #ffffff, 10, 0, 0, 0);
 }
+
+.deckButton{
+    -fx-cursor: hand;
+}
+
+
+

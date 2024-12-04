@@ -24,12 +24,11 @@
    <center>
       <Pane prefHeight="266.0" prefWidth="946.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="tableImageView" fitHeight="250.0" fitWidth="150.0" layoutX="426.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" />
-            <Button layoutX="6.0" layoutY="40.0" mnemonicParsing="false" onAction="#onHandleTakeCard" prefHeight="160.0" prefWidth="126.0" style="-fx-scale-x: 1.2; -fx-scale-y: 1.2;" text="Baraja">
+            <Button layoutX="6.0" layoutY="40.0" mnemonicParsing="false" onAction="#onHandleTakeCard" prefHeight="160.0" prefWidth="126.0" styleClass="deckButton">
                <effect>
                   <ImageInput>
                      <source>
-                        <Image url="file:/C:/Users/Windows%2010%20Pro/Desktop/Miniproyecto%20Uno%20%234/src/main/resources/org/example/eiscuno/cards-uno/deck_of_cards.png" />
+                        <Image url="@cards-uno/deck_of_cards.png" />
                      </source>
                   </ImageInput>
                </effect>
@@ -40,10 +39,47 @@
                <effect>
                   <ImageInput>
                      <source>
-                        <Image url="file:/C:/Users/Windows%2010%20Pro/Desktop/Miniproyecto%20Uno%20%234/src/main/resources/org/example/eiscuno/images/button_uno.png" />
+                        <Image url="@images/button_uno.png" />
                      </source>
                   </ImageInput>
                </effect></Button>
+            <ImageView fx:id="tableImageView" fitHeight="250.0" fitWidth="150.0" layoutX="426.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" />
+            <Pane fx:id="pnBtnChooseColor" layoutX="397.0" layoutY="14.0" prefHeight="212.0" prefWidth="209.0">
+               <children>
+                  <ImageView fx:id="btnBlue" fitHeight="100.0" fitWidth="127.0" onMouseClicked="#onHandleClickChooseColor" onMouseEntered="#onHandleMouseHover" onMouseExited="#onHandleMouseExited" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/btn_blue.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fx:id="btnGreen" fitHeight="100.0" fitWidth="127.0" layoutX="104.0" onMouseClicked="#onHandleClickChooseColor" onMouseEntered="#onHandleMouseHover" onMouseExited="#onHandleMouseExited" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/btn_green.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fx:id="btnYellow" fitHeight="100.0" fitWidth="127.0" layoutX="104.0" layoutY="106.0" onMouseClicked="#onHandleClickChooseColor" onMouseEntered="#onHandleMouseHover" onMouseExited="#onHandleMouseExited" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/btn_yellow.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fx:id="btnRed" fitHeight="100.0" fitWidth="127.0" layoutY="106.0" onMouseClicked="#onHandleClickChooseColor" onMouseEntered="#onHandleMouseHover" onMouseExited="#onHandleMouseExited" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/btn_red.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </Pane>
          </children>
       </Pane>
    </center>

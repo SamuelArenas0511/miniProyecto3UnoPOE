@@ -5,16 +5,18 @@ import org.example.eiscuno.model.deck.Deck;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
 
+import java.util.Objects;
+
 /**
  * Represents a game of Uno.
  * This class manages the game logic and interactions between players, deck, and the table.
  */
 public class GameUno implements IGameUno {
 
-    private Player humanPlayer;
-    private Player machinePlayer;
-    private Deck deck;
-    private Table table;
+    private final Player humanPlayer;
+    private final Player machinePlayer;
+    private final Deck deck;
+    private final Table table;
 
     /**
      * Constructs a new GameUno instance.
@@ -58,6 +60,15 @@ public class GameUno implements IGameUno {
         for (int i = 0; i < numberOfCards; i++) {
             player.addCard(this.deck.takeCard());
         }
+    }
+
+    @Override
+    public boolean isEspecialCard(Card card) {
+        return Objects.equals(card.getType(), "WILD") ||
+                Objects.equals(card.getType(), "FOUR_WILD") ||
+                Objects.equals(card.getType(), "SKIP") ||
+                Objects.equals(card.getType(), "TWO_WILD") ||
+                Objects.equals(card.getType(), "RESERVE");
     }
 
     /**
@@ -123,4 +134,5 @@ public class GameUno implements IGameUno {
     public Boolean isGameOver() {
         return null;
     }
+
 }

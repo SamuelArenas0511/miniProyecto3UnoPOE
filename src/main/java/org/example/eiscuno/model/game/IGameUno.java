@@ -28,6 +28,8 @@ public interface IGameUno {
      */
     void playCard(Card card);
 
+    boolean isEspecialCard(Card card);
+
     /**
      * Handles the action when a player shouts "Uno".
      *

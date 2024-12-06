@@ -4,10 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" name="Changes" comment="se añadio la funcionalidad de todas las cartas especiales, se añadio un nuevo atributo a carta que guarda el tipo de carta especial, se añadio la posibilidad de elegir color con la carta especial wild, AUN QUEDA PENDIENTE AÑADIR TODAS ESAS FUNCIONALIDAD A LA MAQUINA">
+    <list default="true" id="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/Card.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/deck/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/deck/Deck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/game/GameUno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/game/GameUno.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/game/IGameUno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/game/IGameUno.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadPlayMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadPlayMachine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/eiscuno/css/gameCss.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/eiscuno/css/gameCss.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/eiscuno/game-uno-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/eiscuno/game-uno-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,27 +160,11 @@
       <workItem from="1733066375090" duration="58000" />
       <workItem from="1733066507514" duration="2248000" />
       <workItem from="1733097902128" duration="3131000" />
-      <workItem from="1733323443605" duration="11906000" />
-      <workItem from="1733351219364" duration="101000" />
-      <workItem from="1733355385263" duration="2819000" />
+      <workItem from="1733323443605" duration="11650000" />
     </task>
-    <task id="LOCAL-00001" summary="se añadio la funcionalidad de todas las cartas especiales, se añadio un nuevo atributo a carta que guarda el tipo de carta especial, se añadio la posibilidad de elegir color con la carta especial wild, AUN QUEDA PENDIENTE AÑADIR TODAS ESAS FUNCIONALIDAD A LA MAQUINA">
-      <option name="closed" value="true" />
-      <created>1733335326708</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1733335326708</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="se añadio la funcionalidad de todas las cartas especiales, se añadio un nuevo atributo a carta que guarda el tipo de carta especial" />
-    <MESSAGE value="se añadio la funcionalidad de todas las cartas especiales, se añadio un nuevo atributo a carta que guarda el tipo de carta especial, se añadio la posibilidad de elegir color con la carta especial wild, AUN QUEDA PENDIENTE AÑADIR TODAS ESAS FUNCIONALIDAD A LA MAQUINA" />
-    <option name="LAST_COMMIT_MESSAGE" value="se añadio la funcionalidad de todas las cartas especiales, se añadio un nuevo atributo a carta que guarda el tipo de carta especial, se añadio la posibilidad de elegir color con la carta especial wild, AUN QUEDA PENDIENTE AÑADIR TODAS ESAS FUNCIONALIDAD A LA MAQUINA" />
   </component>
 </project>

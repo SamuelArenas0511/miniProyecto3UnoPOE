@@ -67,12 +67,13 @@ public class GameUnoController {
         printCardsHumanPlayer();
         setVisibilityButtonsChooseColor();
 
+
         threadSingUNOMachine = new ThreadSingUNOMachine(this.humanPlayer.getCardsPlayer());
         Thread t = new Thread(threadSingUNOMachine, "ThreadSingUNO");
         t.start();
 
 
-        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.tableImageView, this.gameUno, this.gridPaneCardsMachine);
+        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.humanPlayer, this.tableImageView, this.gameUno, this.gridPaneCardsMachine, this.gridPaneCardsPlayer, this.posInitCardToShow);
         threadPlayMachine.start();
         threadPlayMachine.printCardsMachinePlayer();
     }
@@ -124,6 +125,7 @@ public class GameUnoController {
             ImageView cardImageView = card.getCard();
             cardImageView.getStyleClass().add("card-image");
             cardImageView.setOnMouseClicked((MouseEvent event) -> {
+                System.out.println("hiciste click");
                 selectedCard(card);
             });
             this.gridPaneCardsPlayer.add(cardImageView, i, 0);

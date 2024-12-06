@@ -68,5 +68,9 @@ public class Card {
         return color;
     }
 
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     public String getType() {return type;}
 }

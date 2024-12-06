@@ -112,6 +112,7 @@ public class GameUnoController {
     private void printCardTable() {
         tableImageView.setImage(table.getCurrentCardOnTheTable().getImage());
     }
+    
     /**
      * Prints the human player's cards on the grid pane.
      */

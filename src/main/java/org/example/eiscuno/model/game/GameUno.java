@@ -18,6 +18,8 @@ public class GameUno implements IGameUno {
     private final Deck deck;
     private final Table table;
     private String colorChoose;
+    private boolean playerSingUno;
+    private boolean machineSingUno;
 
     /**
      * Constructs a new GameUno instance.
@@ -32,6 +34,8 @@ public class GameUno implements IGameUno {
         this.machinePlayer = machinePlayer;
         this.deck = deck;
         this.table = table;
+        this.playerSingUno = false;
+        this.machineSingUno = false;
     }
 
     public String getColorChoose() {
@@ -174,4 +178,19 @@ public class GameUno implements IGameUno {
                 Objects.equals(card.getType(), "WILD") || Objects.equals(card.getType(), "FOUR_WILD");
     }
 
+    public boolean isPlayerSingUno() {
+        return playerSingUno;
+    }
+
+    public void setPlayerSingUno(boolean playerSingUno) {
+        this.playerSingUno = playerSingUno;
+    }
+
+    public boolean isMachineSingUno() {
+        return machineSingUno;
+    }
+
+    public void setMachineSingUno(boolean machineSingUno) {
+        this.machineSingUno = machineSingUno;
+    }
 }

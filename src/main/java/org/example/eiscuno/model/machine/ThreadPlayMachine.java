@@ -62,6 +62,9 @@ public class ThreadPlayMachine extends Thread {
         }
         if (card == null) {
             System.out.println("La maquina comio carta");
+            if(gameUno.isMachineSingUno()){
+                gameUno.setMachineSingUno(false);
+            }
             // No hay cartas jugables: el jugador máquina come una carta
             Platform.runLater(this::printCardsMachinePlayer);
             gameUno.eatCard(machinePlayer, 1);
@@ -132,7 +135,4 @@ public class ThreadPlayMachine extends Thread {
         this.hasPlayerPlayed = hasPlayerPlayed;
     }
 
-    public boolean isHasPlayerPlayed() {
-        return hasPlayerPlayed;
-    }
 }

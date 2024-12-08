@@ -44,6 +44,12 @@ public class GameUnoController {
     @FXML
     private Pane pnBtnChooseColor;
 
+    @FXML
+    private Button unoButton;
+
+    @FXML
+    private Button takeCardButton;
+
     private Player humanPlayer;
     private Player machinePlayer;
     private Deck deck;
@@ -67,7 +73,7 @@ public class GameUnoController {
         setVisibilityButtonsChooseColor();
 
 
-        threadSingUNOMachine = new ThreadSingUNOMachine(this.humanPlayer.getCardsPlayer());
+        threadSingUNOMachine = new ThreadSingUNOMachine(this.humanPlayer, this.machinePlayer, this.gameUno, this.gridPaneCardsPlayer);
         Thread t = new Thread(threadSingUNOMachine, "ThreadSingUNO");
         t.start();
 
@@ -248,9 +254,13 @@ public class GameUnoController {
      */
     @FXML
     void onHandleTakeCard(ActionEvent event) {
-            gameUno.eatCard(humanPlayer,1);
-            printCardsHumanPlayer();
-            threadPlayMachine.setHasPlayerPlayed(true);
+        if(gameUno.isPlayerSingUno()){
+            gameUno.setPlayerSingUno(false);
+        }
+
+        gameUno.eatCard(humanPlayer,1);
+        printCardsHumanPlayer();
+        threadPlayMachine.setHasPlayerPlayed(true);
 
     }
 
@@ -261,6 +271,17 @@ public class GameUnoController {
      */
     @FXML
     void onHandleUno(ActionEvent event) {
+        if((machinePlayer.getCardsPlayer().size() == 1)&&(!gameUno.isMachineSingUno())){
+            gameUno.setPlayerSingUno(true);
+            gameUno.eatCard(machinePlayer,1);
+            threadPlayMachine.printCardsMachinePlayer();
+            gameUno.setPlayerSingUno(false);
+            System.out.println("maquina come una por no decir uno");
+        }
+        if(humanPlayer.getCardsPlayer().size() == 1){
+            gameUno.setPlayerSingUno(true);
+            System.out.println("digo uno");
+        }
         // Implement logic to handle Uno event here
     }
 

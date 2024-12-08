@@ -50,7 +50,6 @@ public class GameUnoController {
     private Table table;
     private GameUno gameUno;
     private int posInitCardToShow;
-    private String colorChoose;
 
     private ThreadSingUNOMachine threadSingUNOMachine;
     private ThreadPlayMachine threadPlayMachine;
@@ -73,7 +72,7 @@ public class GameUnoController {
         t.start();
 
 
-        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.humanPlayer, this.tableImageView, this.gameUno, this.gridPaneCardsMachine, this.gridPaneCardsPlayer, this.posInitCardToShow);
+        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.humanPlayer, this.tableImageView, this.gameUno, this.gridPaneCardsMachine, this.gridPaneCardsPlayer);
         threadPlayMachine.start();
         threadPlayMachine.printCardsMachinePlayer();
     }
@@ -92,7 +91,6 @@ public class GameUnoController {
         this.table = new Table();
         this.gameUno = new GameUno(this.humanPlayer, this.machinePlayer, this.deck, this.table);
         this.posInitCardToShow = 0;
-        this.colorChoose = "";
     }
     /**
      * Set background Image in the game
@@ -132,10 +130,10 @@ public class GameUnoController {
     }
 
     private void selectedCard(Card card){
-        if (Objects.equals(card.getColor(), table.getCurrentCardOnTheTable().getColor()) ||
-                Objects.equals(card.getValue(), table.getCurrentCardOnTheTable().getValue())
-                || Objects.equals(card.getType(), "WILD") || Objects.equals(card.getType(), "FOUR_WILD") || Objects.equals(card.getColor(), colorChoose)) {
+
+        if (gameUno.isCardPlayable(card)) {
             gameUno.playCard(card);
+
             tableImageView.setImage(card.getImage());
             humanPlayer.removeCard(findPosCardsHumanPlayer(card));
             if(gameUno.isEspecialCard(card)){
@@ -164,13 +162,13 @@ public class GameUnoController {
         ImageView sourceButton = (ImageView) actionEvent.getSource();
         String buttonId = sourceButton.getId();
         if(Objects.equals(buttonId, "btnBlue")){
-            colorChoose = "BLUE";
+            gameUno.setColorChoose("BLUE");
         }else if(Objects.equals(buttonId, "btnRed")){
-            colorChoose = "RED";
+            gameUno.setColorChoose("RED");
         }else if(Objects.equals(buttonId, "btnYellow")){
-            colorChoose = "YELLOW";
+            gameUno.setColorChoose("YELLOW");
         }else if(Objects.equals(buttonId, "btnGreen")){
-            colorChoose = "GREEN";
+            gameUno.setColorChoose("GREEN");
         }
     }
 
@@ -250,9 +248,10 @@ public class GameUnoController {
      */
     @FXML
     void onHandleTakeCard(ActionEvent event) {
-        gameUno.eatCard(humanPlayer,1);
-        printCardsHumanPlayer();
-        threadPlayMachine.setHasPlayerPlayed(true);
+            gameUno.eatCard(humanPlayer,1);
+            printCardsHumanPlayer();
+            threadPlayMachine.setHasPlayerPlayed(true);
+
     }
 
     /**

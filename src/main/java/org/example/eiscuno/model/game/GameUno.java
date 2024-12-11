@@ -17,6 +17,9 @@ public class GameUno implements IGameUno {
     private final Player machinePlayer;
     private final Deck deck;
     private final Table table;
+    private String colorChoose;
+    private boolean playerSingUno;
+    private boolean machineSingUno;
 
     /**
      * Constructs a new GameUno instance.
@@ -31,6 +34,16 @@ public class GameUno implements IGameUno {
         this.machinePlayer = machinePlayer;
         this.deck = deck;
         this.table = table;
+        this.playerSingUno = false;
+        this.machineSingUno = false;
+    }
+
+    public String getColorChoose() {
+        return colorChoose;
+    }
+
+    public void setColorChoose(String colorChoose) {
+        this.colorChoose = colorChoose;
     }
 
     /**
@@ -135,4 +148,49 @@ public class GameUno implements IGameUno {
         return null;
     }
 
+    public boolean isCardPlayable(Card card) {
+        Card currentCard = table.getCurrentCardOnTheTable();
+        /*
+        hacer que si la carta en la mesa es una carta especial wild o four wild (las que cambian el color en el juego)
+        compare el color con el atributo colorChoose y además solo compare color y ese mismo tipo para evitar bugs
+         */
+        if(Objects.equals(currentCard.getType(), "WILD") ||
+                Objects.equals(currentCard.getType(), "FOUR_WILD")){
+            return Objects.equals(card.getColor(), colorChoose) ||
+                    Objects.equals(card.getType(), "WILD") ||
+                    Objects.equals(card.getType(), "FOUR_WILD");
+        }
+
+        /*
+        si es una carta especial skip, two wild o reserve solo compare el color y el tipo
+        ya que value es null en todas las cartas especiales y estaba causando bugs
+        */
+        if (Objects.equals(currentCard.getType(), "SKIP") ||
+                Objects.equals(currentCard.getType(), "TWO_WILD")||
+                Objects.equals(currentCard.getType(), "RESERVE")) {
+            return Objects.equals(card.getColor(), currentCard.getColor()) ||
+                    Objects.equals(currentCard.getType(), card.getType());
+        }
+
+        //si no es una carta especial
+        return Objects.equals(card.getColor(), currentCard.getColor()) ||
+                Objects.equals(card.getValue(), currentCard.getValue()) ||
+                Objects.equals(card.getType(), "WILD") || Objects.equals(card.getType(), "FOUR_WILD");
+    }
+
+    public boolean isPlayerSingUno() {
+        return playerSingUno;
+    }
+
+    public void setPlayerSingUno(boolean playerSingUno) {
+        this.playerSingUno = playerSingUno;
+    }
+
+    public boolean isMachineSingUno() {
+        return machineSingUno;
+    }
+
+    public void setMachineSingUno(boolean machineSingUno) {
+        this.machineSingUno = machineSingUno;
+    }
 }

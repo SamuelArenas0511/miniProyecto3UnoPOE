@@ -24,7 +24,7 @@
    <center>
       <Pane prefHeight="266.0" prefWidth="946.0" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="6.0" layoutY="40.0" mnemonicParsing="false" onAction="#onHandleTakeCard" prefHeight="160.0" prefWidth="126.0" styleClass="deckButton">
+            <Button fx:id="takeCardButton" layoutX="6.0" layoutY="40.0" mnemonicParsing="false" onAction="#onHandleTakeCard" prefHeight="160.0" prefWidth="126.0" styleClass="deckButton">
                <effect>
                   <ImageInput>
                      <source>
@@ -35,14 +35,17 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button layoutX="803.0" layoutY="46.0" mnemonicParsing="false" onAction="#onHandleUno" prefHeight="149.0" prefWidth="199.0" text="UNO">
+            <Button fx:id="unoButton" layoutX="803.0" layoutY="46.0" mnemonicParsing="false" onAction="#onHandleUno" prefHeight="149.0" prefWidth="199.0" text="UNO">
                <effect>
                   <ImageInput>
                      <source>
                         <Image url="@images/button_uno.png" />
                      </source>
                   </ImageInput>
-               </effect></Button>
+               </effect>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
             <ImageView fx:id="tableImageView" fitHeight="250.0" fitWidth="150.0" layoutX="426.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" />
             <Pane fx:id="pnBtnChooseColor" layoutX="397.0" layoutY="14.0" prefHeight="212.0" prefWidth="209.0">
                <children>

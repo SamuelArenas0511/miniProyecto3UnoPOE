@@ -44,13 +44,18 @@ public class GameUnoController {
     @FXML
     private Pane pnBtnChooseColor;
 
+    @FXML
+    private Button unoButton;
+
+    @FXML
+    private Button takeCardButton;
+
     private Player humanPlayer;
     private Player machinePlayer;
     private Deck deck;
     private Table table;
     private GameUno gameUno;
     private int posInitCardToShow;
-    private String colorChoose;
 
     private ThreadSingUNOMachine threadSingUNOMachine;
     private ThreadPlayMachine threadPlayMachine;
@@ -68,12 +73,12 @@ public class GameUnoController {
         setVisibilityButtonsChooseColor();
 
 
-        threadSingUNOMachine = new ThreadSingUNOMachine(this.humanPlayer.getCardsPlayer());
+        threadSingUNOMachine = new ThreadSingUNOMachine(this.humanPlayer, this.machinePlayer, this.gameUno, this.gridPaneCardsPlayer);
         Thread t = new Thread(threadSingUNOMachine, "ThreadSingUNO");
         t.start();
 
 
-        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.humanPlayer, this.tableImageView, this.gameUno, this.gridPaneCardsMachine, this.gridPaneCardsPlayer, this.posInitCardToShow);
+        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.humanPlayer, this.tableImageView, this.gameUno, this.gridPaneCardsMachine, this.gridPaneCardsPlayer);
         threadPlayMachine.start();
         threadPlayMachine.printCardsMachinePlayer();
     }
@@ -92,7 +97,6 @@ public class GameUnoController {
         this.table = new Table();
         this.gameUno = new GameUno(this.humanPlayer, this.machinePlayer, this.deck, this.table);
         this.posInitCardToShow = 0;
-        this.colorChoose = "";
     }
     /**
      * Set background Image in the game
@@ -133,10 +137,10 @@ public class GameUnoController {
     }
 
     private void selectedCard(Card card){
-        if (Objects.equals(card.getColor(), table.getCurrentCardOnTheTable().getColor()) ||
-                Objects.equals(card.getValue(), table.getCurrentCardOnTheTable().getValue())
-                || Objects.equals(card.getType(), "WILD") || Objects.equals(card.getType(), "FOUR_WILD") || Objects.equals(card.getColor(), colorChoose)) {
+
+        if (gameUno.isCardPlayable(card)) {
             gameUno.playCard(card);
+
             tableImageView.setImage(card.getImage());
             humanPlayer.removeCard(findPosCardsHumanPlayer(card));
             if(gameUno.isEspecialCard(card)){
@@ -165,13 +169,13 @@ public class GameUnoController {
         ImageView sourceButton = (ImageView) actionEvent.getSource();
         String buttonId = sourceButton.getId();
         if(Objects.equals(buttonId, "btnBlue")){
-            colorChoose = "BLUE";
+            gameUno.setColorChoose("BLUE");
         }else if(Objects.equals(buttonId, "btnRed")){
-            colorChoose = "RED";
+            gameUno.setColorChoose("RED");
         }else if(Objects.equals(buttonId, "btnYellow")){
-            colorChoose = "YELLOW";
+            gameUno.setColorChoose("YELLOW");
         }else if(Objects.equals(buttonId, "btnGreen")){
-            colorChoose = "GREEN";
+            gameUno.setColorChoose("GREEN");
         }
     }
 
@@ -251,9 +255,14 @@ public class GameUnoController {
      */
     @FXML
     void onHandleTakeCard(ActionEvent event) {
+        if(gameUno.isPlayerSingUno()){
+            gameUno.setPlayerSingUno(false);
+        }
+
         gameUno.eatCard(humanPlayer,1);
         printCardsHumanPlayer();
         threadPlayMachine.setHasPlayerPlayed(true);
+
     }
 
     /**
@@ -263,6 +272,17 @@ public class GameUnoController {
      */
     @FXML
     void onHandleUno(ActionEvent event) {
+        if((machinePlayer.getCardsPlayer().size() == 1)&&(!gameUno.isMachineSingUno())){
+            gameUno.setPlayerSingUno(true);
+            gameUno.eatCard(machinePlayer,1);
+            threadPlayMachine.printCardsMachinePlayer();
+            gameUno.setPlayerSingUno(false);
+            System.out.println("maquina come una por no decir uno");
+        }
+        if(humanPlayer.getCardsPlayer().size() == 1){
+            gameUno.setPlayerSingUno(true);
+            System.out.println("digo uno");
+        }
         // Implement logic to handle Uno event here
     }
 

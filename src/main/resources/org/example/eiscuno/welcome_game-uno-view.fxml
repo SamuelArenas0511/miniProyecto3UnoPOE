@@ -14,7 +14,7 @@
             <Image url="@images/background_uno_3.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="385.0" fitWidth="484.0" layoutX="421.0" layoutY="168.0" onMouseClicked="#onHandlePlayGame" pickOnBounds="true" preserveRatio="true" styleClass="starGameButton">
+      <ImageView fitHeight="385.0" fitWidth="484.0" layoutX="421.0" layoutY="168.0" onMouseClicked="#onHandlePlayGame" onMouseEntered="#onHandleEnteredBtnPlay" pickOnBounds="true" preserveRatio="true" styleClass="starGameButton">
          <image>
             <Image url="@images/uno.png" />
          </image>

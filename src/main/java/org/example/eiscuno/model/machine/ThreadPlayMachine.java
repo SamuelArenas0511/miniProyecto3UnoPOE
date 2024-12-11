@@ -71,9 +71,9 @@ public class ThreadPlayMachine extends Thread {
             }
             gameUno.eatCard(machinePlayer, 1);
             hasPlayerPlayed = false;
+            Platform.runLater(() -> updateCardsHumanPlayer.setStyleTurnPlayer(true));
             Platform.runLater(() -> updateCardsHumanPlayer.setAnimationTakeCard(false,1));
         } else {
-            // Jugar la carta encontrada
             machinePlayer.removeCard(counter);
             gameUno.playCard(card);
             tableImageView.setImage(card.getImage());
@@ -85,19 +85,22 @@ public class ThreadPlayMachine extends Thread {
                 Platform.runLater(updateCardsHumanPlayer::execute);
                 hasPlayerPlayed = true;
             }else{
+                Platform.runLater(() -> updateCardsHumanPlayer.setStyleTurnPlayer(true));
                 hasPlayerPlayed = false;
             }
         }
     }
 
-    public void playEspecialCard(Player player, Card card) {
+    public void playEspecialCard(Player player, Card card) throws InterruptedException {
         if(card.getType().equals("FOUR_WILD")) {;
+            Platform.runLater(() -> updateCardsHumanPlayer.setAnimationTakeCard(true,4));
+            Thread.sleep(1000);
             gameUno.eatCard(player, 4);
             getRandomColor();
-
         }else if(card.getType().equals("TWO_WILD")) {
+            Platform.runLater(() -> updateCardsHumanPlayer.setAnimationTakeCard(true,2));
+            Thread.sleep(1000);
             gameUno.eatCard(player, 2);
-
         }else if (card.getType().equals("WILD")) {
             getRandomColor();
 
@@ -108,6 +111,12 @@ public class ThreadPlayMachine extends Thread {
         String[] colors = {"BLUE", "RED", "YELLOW", "GREEN"};
         Random random = new Random();
         String color = colors[random.nextInt(colors.length)];
+        switch (color) {
+            case "BLUE" -> tableImageView.setStyle("-fx-effect: dropshadow(gaussian, blue, 20, 0, 0, 0)");
+            case "RED" -> tableImageView.setStyle("-fx-effect: dropshadow(gaussian, red, 20, 0, 0, 0)");
+            case "YELLOW" -> tableImageView.setStyle("-fx-effect: dropshadow(gaussian, yellow, 20, 0, 0, 0)");
+            case "GREEN" -> tableImageView.setStyle("-fx-effect: dropshadow(gaussian, green, 20, 0, 0, 0)");
+        }
         System.out.println("la maquina acaba de escoger el color: "+ color);
         gameUno.setColorChoose(color);
     }
@@ -116,6 +125,7 @@ public class ThreadPlayMachine extends Thread {
      * Prints the machine player's cards on the grid pane.
      */
     public void printCardsMachinePlayer() {
+        tableImageView.setStyle(null);
         this.gridPaneCardsMachine.getChildren().clear();
         Card[] currentVisibleCardsMachinePlayer = this.gameUno.getCurrentVisibleCardsMachinePlayer(0);
         for (int i = 0; i < currentVisibleCardsMachinePlayer.length; i++) {

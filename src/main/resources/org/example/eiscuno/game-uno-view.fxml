@@ -28,7 +28,7 @@
                <effect>
                   <ImageInput>
                      <source>
-                        <Image url="file:/C:/Users/Windows%2010%20Pro/Desktop/Miniproyecto%20Uno%20%234/src/main/resources/org/example/eiscuno/cards-uno/deck_of_cards.png" />
+                        <Image url="@cards-uno/deck_of_cards.png" />
                      </source>
                   </ImageInput>
                </effect>

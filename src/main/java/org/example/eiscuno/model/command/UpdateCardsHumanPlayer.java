@@ -22,4 +22,11 @@ public class UpdateCardsHumanPlayer implements Command {
         controller.setAnimationTakeCard(player, numCard);
     }
 
+    @Override
+    public void setStyleTurnPlayer(boolean turnPlayer) {
+        controller.turnPlayerStyle(turnPlayer);
+    }
+
+
+
 }

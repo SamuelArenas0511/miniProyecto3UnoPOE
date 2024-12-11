@@ -25,7 +25,7 @@ public class ThreadShowResultGame extends Thread{
             try {
                 Thread.sleep(100);
                 showResultGame();
-                if (!running) break;
+                if (!running) return;
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 running = false;
@@ -38,12 +38,10 @@ public class ThreadShowResultGame extends Thread{
             int cardsHumanPlayer = gridPaneCardsPlayer.getChildren().size();
             int cardsMachinePlayer = gridPaneCardsMachine.getChildren().size();
             if (cardsHumanPlayer == 0) {
-                System.out.println("pase");
                 threadPlayMachine.stopThread();
                 Platform.runLater(() -> updateCardsHumanPlayer.showResult(true));
                 stopThread();
             } else if (cardsMachinePlayer == 0) {
-                System.out.println("pase 2");
                 threadPlayMachine.stopThread();
                 Platform.runLater(() -> updateCardsHumanPlayer.showResult(false));
                 stopThread();

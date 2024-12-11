@@ -3,6 +3,7 @@ package org.example.eiscuno.controller;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -93,7 +94,7 @@ public class GameUnoController {
         threadPlayMachine.start();
         threadPlayMachine.printCardsMachinePlayer();
 
-        threadShowResultGame = new ThreadShowResultGame( this.gridPaneCardsMachine,this.gridPaneCardsPlayer, this, threadPlayMachine);
+        threadShowResultGame = new ThreadShowResultGame(this.gridPaneCardsMachine, this.gridPaneCardsPlayer, this, threadPlayMachine);
         Thread threadShowResult = new Thread(threadShowResultGame, "ThreadSingUNO");
         threadShowResult.start();
     }
@@ -115,6 +116,7 @@ public class GameUnoController {
         this.startGame = true;
         cardEat.setVisible(false);
     }
+
     /**
      * Set background Image in the game
      */
@@ -134,11 +136,12 @@ public class GameUnoController {
     private void printCardTable() {
         tableImageView.setImage(table.getCurrentCardOnTheTable().getImage());
     }
-    
+
     /**
      * Prints the human player's cards on the grid pane.
      */
     public void printCardsHumanPlayer() {
+        tableImageView.setStyle(null);
         this.gridPaneCardsPlayer.getChildren().clear();
         Card[] currentVisibleCardsHumanPlayer = this.gameUno.getCurrentVisibleCardsHumanPlayer(this.posInitCardToShow);
         for (int i = 0; i < currentVisibleCardsHumanPlayer.length; i++) {
@@ -147,13 +150,15 @@ public class GameUnoController {
             cardImageView.getStyleClass().add("card-image");
             cardImageView.setOnMouseClicked((MouseEvent event) -> {
                 System.out.println("hiciste click");
-                selectedCard(card, cardImageView);
+                selectedCard(card);
             });
-            if(startGame) {
+            if (startGame) {
+                cardImageView.setMouseTransparent(true);
                 setAnimation(i, cardImageView);
-            }else{
+            } else {
                 this.gridPaneCardsPlayer.add(cardImageView, i, 0);
             }
+
         }
         startGame = false;
     }
@@ -168,38 +173,46 @@ public class GameUnoController {
     }
 
     private void animateDealCard(ImageView cardImageView) {
+        turnPlayerStyle(true);
         ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.4), cardImageView);
         scaleTransition.setFromX(1.5);
         scaleTransition.setFromY(1.5);
         scaleTransition.setToX(1.0);
         scaleTransition.setToY(1.0);
-
         scaleTransition.play();
+        scaleTransition.setOnFinished(event -> {
+            cardImageView.setMouseTransparent(false);
+        });
     }
 
-    private void selectedCard(Card card, ImageView cardImageView) {
+    private void selectedCard(Card card) {
         if (gameUno.isCardPlayable(card) && !threadPlayMachine.isHasPlayerPlayed()) {
             gameUno.playCard(card);
             tableImageView.setImage(card.getImage());
             humanPlayer.removeCard(findPosCardsHumanPlayer(card));
-            if(gameUno.isEspecialCard(card)){
+            if (gameUno.isEspecialCard(card)) {
                 playEspecialCard(machinePlayer, card);
                 threadPlayMachine.printCardsMachinePlayer();
-            }else{
+                return;
+            } else {
                 threadPlayMachine.setHasPlayerPlayed(true);
             }
             printCardsHumanPlayer();
+            turnPlayerStyle(false);
         }
     }
+
     private void playEspecialCard(Player player, Card card) {
-        if(card.getType().equals("FOUR_WILD")) {;
-            setAnimationTakeCard(false,4);
+        printCardsHumanPlayer();
+        turnPlayerStyle(true);
+        if (card.getType().equals("FOUR_WILD")) {
+            setAnimationTakeCard(false, 4);
             gameUno.eatCard(player, 4);
             setVisibilityButtonsChooseColor();
-        }else if(card.getType().equals("TWO_WILD")) {
-            setAnimationTakeCard(false,2);
+        } else if (card.getType().equals("TWO_WILD")) {
+            setAnimationTakeCard(false, 2);
             gameUno.eatCard(player, 2);
-        }else if (card.getType().equals("WILD")) {
+        } else if (card.getType().equals("WILD")) {
             setVisibilityButtonsChooseColor();
         }
     }
@@ -208,14 +221,18 @@ public class GameUnoController {
         setVisibilityButtonsChooseColor();
         ImageView sourceButton = (ImageView) actionEvent.getSource();
         String buttonId = sourceButton.getId();
-        if(Objects.equals(buttonId, "btnBlue")){
+        if (Objects.equals(buttonId, "btnBlue")) {
             gameUno.setColorChoose("BLUE");
-        }else if(Objects.equals(buttonId, "btnRed")){
+            tableImageView.setStyle("-fx-effect: dropshadow(gaussian, blue, 20, 0, 0, 0)");
+        } else if (Objects.equals(buttonId, "btnRed")) {
             gameUno.setColorChoose("RED");
-        }else if(Objects.equals(buttonId, "btnYellow")){
+            tableImageView.setStyle("-fx-effect: dropshadow(gaussian, red, 20, 0, 0, 0)");
+        } else if (Objects.equals(buttonId, "btnYellow")) {
             gameUno.setColorChoose("YELLOW");
-        }else if(Objects.equals(buttonId, "btnGreen")){
+            tableImageView.setStyle("-fx-effect: dropshadow(gaussian, yellow, 20, 0, 0, 0)");
+        } else if (Objects.equals(buttonId, "btnGreen")) {
             gameUno.setColorChoose("GREEN");
+            tableImageView.setStyle("-fx-effect: dropshadow(gaussian, green, 20, 0, 0, 0)");
         }
     }
 
@@ -223,13 +240,13 @@ public class GameUnoController {
         ImageView sourceButton = (ImageView) mouseEvent.getSource();
         String buttonId = sourceButton.getId();
         DropShadow dropShadow = new DropShadow();
-        if(Objects.equals(buttonId, "btnBlue")){
+        if (Objects.equals(buttonId, "btnBlue")) {
             dropShadow.setColor(Color.rgb(88, 87, 253));
-        }else if(Objects.equals(buttonId, "btnRed")){
+        } else if (Objects.equals(buttonId, "btnRed")) {
             dropShadow.setColor(Color.rgb(255, 85, 85));
-        }else if(Objects.equals(buttonId, "btnYellow")){
+        } else if (Objects.equals(buttonId, "btnYellow")) {
             dropShadow.setColor(Color.rgb(255, 170, 0));
-        }else if(Objects.equals(buttonId, "btnGreen")){
+        } else if (Objects.equals(buttonId, "btnGreen")) {
             dropShadow.setColor(Color.rgb(85, 170, 85));
         }
         dropShadow.setRadius(8);
@@ -273,6 +290,7 @@ public class GameUnoController {
             this.posInitCardToShow--;
             printCardsHumanPlayer();
         }
+        turnPlayerStyle(!threadPlayMachine.isHasPlayerPlayed());
     }
 
     /**
@@ -286,6 +304,8 @@ public class GameUnoController {
             this.posInitCardToShow++;
             printCardsHumanPlayer();
         }
+        turnPlayerStyle(!threadPlayMachine.isHasPlayerPlayed());
+
     }
 
     /**
@@ -295,17 +315,23 @@ public class GameUnoController {
      */
     @FXML
     void onHandleTakeCard(ActionEvent event) {
-        if(gameUno.isPlayerSingUno()){
+        if (gameUno.isPlayerSingUno()) {
             gameUno.setPlayerSingUno(false);
-        }else if(!threadPlayMachine.isHasPlayerPlayed()){
-            gameUno.eatCard(humanPlayer,1);
+        } else if (!threadPlayMachine.isHasPlayerPlayed()) {
+            gameUno.eatCard(humanPlayer, 1);
             threadPlayMachine.setHasPlayerPlayed(true);
-            setAnimationTakeCard(true,1);
+            setAnimationTakeCard(true, 1);
+
         }
     }
 
-    public void setAnimationTakeCard(boolean player, int numCards){
+    public void setAnimationTakeCard(boolean player, int numCards) {
         cardEat.setVisible(true);
+
+        cardEat.setScaleX(1.0);
+        cardEat.setScaleY(1.0);
+        cardEat.setTranslateX(0);
+        cardEat.setTranslateY(0);
 
         SequentialTransition animation = new SequentialTransition();
 
@@ -324,8 +350,8 @@ public class GameUnoController {
             scaleUp.setToY(1.3);
 
             ScaleTransition scaleDown = new ScaleTransition(Duration.seconds(0.25), cardEat);
-            scaleDown.setToX(0);
-            scaleDown.setToY(0);
+            scaleDown.setToX(0.0);
+            scaleDown.setToY(0.0);
 
             TranslateTransition moveTransition2 = new TranslateTransition(Duration.seconds(0.1), cardEat);
             moveTransition2.setToX(0);
@@ -337,6 +363,7 @@ public class GameUnoController {
         animation.setOnFinished(event -> {
             threadPlayMachine.printCardsMachinePlayer();
             printCardsHumanPlayer();
+            turnPlayerStyle(!threadPlayMachine.isHasPlayerPlayed());
         });
 
         animation.play();
@@ -349,14 +376,14 @@ public class GameUnoController {
      */
     @FXML
     void onHandleUno(ActionEvent event) {
-        if((machinePlayer.getCardsPlayer().size() == 1)&&(!gameUno.isMachineSingUno())){
+        if ((machinePlayer.getCardsPlayer().size() == 1) && (!gameUno.isMachineSingUno())) {
             gameUno.setPlayerSingUno(true);
-            gameUno.eatCard(machinePlayer,1);
+            gameUno.eatCard(machinePlayer, 1);
             threadPlayMachine.printCardsMachinePlayer();
             gameUno.setPlayerSingUno(false);
             System.out.println("maquina come una por no decir uno");
         }
-        if(humanPlayer.getCardsPlayer().size() == 1){
+        if (humanPlayer.getCardsPlayer().size() == 1) {
             gameUno.setPlayerSingUno(true);
             System.out.println("digo uno");
         }
@@ -388,5 +415,17 @@ public class GameUnoController {
         alert.showAndWait();
     }
 
+    public void turnPlayerStyle(boolean turnPlayer) {
+        for (Node node : gridPaneCardsPlayer.getChildren()) {
+            if (node instanceof ImageView imageView) {
+                if (turnPlayer) {
+                    imageView.setStyle("-fx-effect: dropshadow(gaussian, white, 8, 0, 0, 0)");
+                } else {
+                    imageView.setStyle("-fx-cursor: default; -fx-opacity: 0.7");
+
+                }
+            }
+        }
+    }
 
 }

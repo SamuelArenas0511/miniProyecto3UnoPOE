@@ -169,7 +169,8 @@ public class GameUno implements IGameUno {
                 Objects.equals(currentCard.getType(), "TWO_WILD")||
                 Objects.equals(currentCard.getType(), "RESERVE")) {
             return Objects.equals(card.getColor(), currentCard.getColor()) ||
-                    Objects.equals(currentCard.getType(), card.getType());
+                    Objects.equals(currentCard.getType(), card.getType()) ||
+                    Objects.equals(card.getType(), "WILD") || Objects.equals(card.getType(), "FOUR_WILD");
         }
 
         //si no es una carta especial
@@ -184,6 +185,7 @@ public class GameUno implements IGameUno {
 
     public void setPlayerSingUno(boolean playerSingUno) {
         this.playerSingUno = playerSingUno;
+        System.out.println("Cante UNO");
     }
 
     public boolean isMachineSingUno() {

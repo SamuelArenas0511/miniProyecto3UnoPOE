@@ -28,7 +28,7 @@
                <effect>
                   <ImageInput>
                      <source>
-                        <Image url="@cards-uno/deck_of_cards.png" />
+                        <Image url="file:/C:/Users/Windows%2010%20Pro/Desktop/Miniproyecto%20Uno%20%234/src/main/resources/org/example/eiscuno/cards-uno/deck_of_cards.png" />
                      </source>
                   </ImageInput>
                </effect>
@@ -83,6 +83,11 @@
                   </ImageView>
                </children>
             </Pane>
+            <ImageView fx:id="cardEat" fitHeight="213.0" fitWidth="125.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@cards-uno/card_uno.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
    </center>

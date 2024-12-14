@@ -37,8 +37,7 @@ public class ThreadSingUNOMachine implements Runnable{
 
     private void hasOneCardTheHumanPlayer(){
         if((player.getCardsPlayer().size() == 1)&&(!gameUno.isPlayerSingUno())){
-            System.out.println("maquina le canta uno al jugador");
-            System.out.println("UNO");
+            System.out.println("UNO (maquina le canta uno al jugador)");
             gameUno.setMachineSingUno(true);
             gameUno.eatCard(player,1);
             Platform.runLater(updateCardsHumanPlayer::execute);
@@ -48,8 +47,8 @@ public class ThreadSingUNOMachine implements Runnable{
     }
 
     private void hasOneCardTheMachinePlayer(){
-        if((machine.getCardsPlayer().size() == 1)&&(!gameUno.isPlayerSingUno())){
-            System.out.println("UNO");
+        if((machine.getCardsPlayer().size() == 1)&&(!gameUno.isPlayerSingUno())&&(!gameUno.isMachineSingUno())){
+            System.out.println("UNO (canta maquina)");
             gameUno.setMachineSingUno(true);
         }
     }

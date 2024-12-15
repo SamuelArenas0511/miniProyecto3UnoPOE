@@ -66,9 +66,6 @@ public class ThreadPlayMachine extends Thread {
         }
         if (card == null) {
             System.out.println("La maquina comio carta");
-            if(gameUno.isMachineSingUno()){
-                gameUno.setMachineSingUno(false);
-            }
             gameUno.eatCard(machinePlayer, 1);
             hasPlayerPlayed = false;
             Platform.runLater(() -> updateCardsHumanPlayer.setStyleTurnPlayer(true));

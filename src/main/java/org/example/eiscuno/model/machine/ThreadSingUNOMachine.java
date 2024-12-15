@@ -26,7 +26,7 @@ public class ThreadSingUNOMachine implements Runnable{
     public void run(){
         while (true){
             try {
-                Thread.sleep(5000);
+                Thread.sleep(6000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -38,11 +38,9 @@ public class ThreadSingUNOMachine implements Runnable{
     private void hasOneCardTheHumanPlayer(){
         if((player.getCardsPlayer().size() == 1)&&(!gameUno.isPlayerSingUno())){
             System.out.println("UNO (maquina le canta uno al jugador)");
-            gameUno.setMachineSingUno(true);
             gameUno.eatCard(player,1);
             Platform.runLater(updateCardsHumanPlayer::execute);
             System.out.println("jugador come una carta");
-            gameUno.setMachineSingUno(false);
         }
     }
 

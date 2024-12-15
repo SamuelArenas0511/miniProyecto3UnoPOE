@@ -95,7 +95,7 @@ public class GameUnoController {
         threadPlayMachine.printCardsMachinePlayer();
 
         threadShowResultGame = new ThreadShowResultGame(this.gridPaneCardsMachine, this.gridPaneCardsPlayer, this, threadPlayMachine);
-        Thread threadShowResult = new Thread(threadShowResultGame, "ThreadSingUNO");
+        Thread threadShowResult = new Thread(threadShowResultGame, "ThreadShowResult");
         threadShowResult.start();
     }
 
@@ -315,13 +315,10 @@ public class GameUnoController {
      */
     @FXML
     void onHandleTakeCard(ActionEvent event) {
-        if (gameUno.isPlayerSingUno()) {
-            gameUno.setPlayerSingUno(false);
-        } else if (!threadPlayMachine.isHasPlayerPlayed()) {
+        if (!threadPlayMachine.isHasPlayerPlayed()) {
             gameUno.eatCard(humanPlayer, 1);
             threadPlayMachine.setHasPlayerPlayed(true);
             setAnimationTakeCard(true, 1);
-
         }
     }
 
@@ -376,18 +373,19 @@ public class GameUnoController {
      */
     @FXML
     void onHandleUno(ActionEvent event) {
+        System.out.println("machine uno is: "+ gameUno.isMachineSingUno());
+        System.out.println("player uno is: "+ gameUno.isPlayerSingUno());
         if ((machinePlayer.getCardsPlayer().size() == 1) && (!gameUno.isMachineSingUno())) {
-            gameUno.setPlayerSingUno(true);
             gameUno.eatCard(machinePlayer, 1);
             threadPlayMachine.printCardsMachinePlayer();
-            gameUno.setPlayerSingUno(false);
+            System.out.println("UNO (le canta jugador a maquina)");
             System.out.println("maquina come una por no decir uno");
         }
-        if (humanPlayer.getCardsPlayer().size() == 1) {
+        if ((humanPlayer.getCardsPlayer().size() == 1)&&(!gameUno.isMachineSingUno())&&(!gameUno.isPlayerSingUno())) {
             gameUno.setPlayerSingUno(true);
-            System.out.println("digo uno");
+            System.out.println("UNO (jugador canta uno)");
         }
-        // Implement logic to handle Uno event here
+
     }
 
     @FXML

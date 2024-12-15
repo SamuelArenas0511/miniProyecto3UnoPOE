@@ -83,6 +83,11 @@
                   </ImageView>
                </children>
             </Pane>
+            <ImageView fx:id="cardEat" fitHeight="213.0" fitWidth="125.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@cards-uno/card_uno.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
    </center>

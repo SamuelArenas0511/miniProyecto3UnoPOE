@@ -1,6 +1,8 @@
 package org.example.eiscuno.model.deck;
 
 import org.example.eiscuno.model.exception.emptyDeckException;
+import org.example.eiscuno.model.factoryMethod.CardFactory;
+import org.example.eiscuno.model.factoryMethod.UnoCardFactory;
 import org.example.eiscuno.model.unoenum.EISCUnoEnum;
 import org.example.eiscuno.model.card.Card;
 
@@ -12,11 +14,13 @@ import java.util.Stack;
  */
 public class Deck {
     private Stack<Card> deckOfCards;
+    private CardFactory cardFactory;
 
     /**
      * Constructs a new deck of Uno cards and initializes it.
      */
     public Deck() {
+        this.cardFactory = new UnoCardFactory();
         deckOfCards = new Stack<>();
         initializeDeck();
     }
@@ -35,7 +39,13 @@ public class Deck {
                     cardEnum.name().startsWith("TWO_WILD_DRAW_") ||
                     cardEnum.name().equals("FOUR_WILD_DRAW") ||
                     cardEnum.name().equals("WILD")) {
-                Card card = new Card(cardEnum.getFilePath(), getCardValue(cardEnum.name()), getCardColor(cardEnum.name()), getCardType(cardEnum.name()));
+                Card card = cardFactory.createCard(
+                        cardEnum.getFilePath(),
+                        getCardValue(cardEnum.name()),
+                        getCardColor(cardEnum.name()),
+                        getCardType(cardEnum.name())
+                );
+//                Card card = new Card(cardEnum.getFilePath(), getCardValue(cardEnum.name()), getCardColor(cardEnum.name()), getCardType(cardEnum.name()));
                 deckOfCards.push(card);
             }
         }

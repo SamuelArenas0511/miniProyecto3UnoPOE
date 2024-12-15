@@ -64,7 +64,7 @@ public class Sound {
         if (clip != null) {
             FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             float currentVolume = volumeControl.getValue();
-            volumeControl.setValue(currentVolume - 10.0f);
+            volumeControl.setValue(currentVolume - 10git .0f);
         }
     }
 

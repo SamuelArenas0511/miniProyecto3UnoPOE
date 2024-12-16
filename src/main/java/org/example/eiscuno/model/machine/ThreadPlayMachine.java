@@ -4,19 +4,22 @@ import javafx.animation.PauseTransition;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import org.example.eiscuno.controller.GameUnoController;
 import org.example.eiscuno.model.card.Card;
 import org.example.eiscuno.model.command.Command;
-import org.example.eiscuno.model.command.UpdateCardsHumanPlayer;
+import org.example.eiscuno.model.command.InvokerCommand;
+import org.example.eiscuno.model.command.specific_commads.SetAnimationTakeCard;
+import org.example.eiscuno.model.command.specific_commads.SetStyleTurnPlayer;
+import org.example.eiscuno.model.command.specific_commads.ShowResult;
+import org.example.eiscuno.model.command.specific_commads.UpdateCardsHumanPlayer;
 import org.example.eiscuno.model.game.GameUno;
 import org.example.eiscuno.model.player.Player;
+import org.example.eiscuno.model.sound.music.MusicGame;
 import org.example.eiscuno.model.table.Table;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.awt.*;
 import java.util.Random;
 
 public class ThreadPlayMachine extends Thread {
@@ -26,9 +29,10 @@ public class ThreadPlayMachine extends Thread {
     private final GameUno gameUno;
     private final GridPane gridPaneCardsMachine;
     private volatile boolean hasPlayerPlayed;
-    private final Command updateCardsHumanPlayer;
     private volatile boolean running = true;
     private boolean startGame = false;
+    private GameUnoController gameUnoController;
+    private MusicGame musicGame;
 
     public ThreadPlayMachine(Table table, Player machinePlayer, Player humanPlayer, ImageView tableImageView, GameUno gameUno, GridPane gridPaneCardsMachine, GameUnoController gameUnoController) {
         this.machinePlayer = machinePlayer;
@@ -37,7 +41,8 @@ public class ThreadPlayMachine extends Thread {
         this.gameUno = gameUno;
         this.hasPlayerPlayed = false;
         this.gridPaneCardsMachine = gridPaneCardsMachine;
-        updateCardsHumanPlayer = new UpdateCardsHumanPlayer(gameUnoController);
+        this.gameUnoController = gameUnoController;
+        this.musicGame = new MusicGame();
     }
 
     public void run() {
@@ -65,11 +70,12 @@ public class ThreadPlayMachine extends Thread {
             counter++;
         }
         if (card == null) {
+            musicGame.playDrawCardSound();
             System.out.println("La maquina comio carta");
             gameUno.eatCard(machinePlayer, 1);
             hasPlayerPlayed = false;
-            Platform.runLater(() -> updateCardsHumanPlayer.setStyleTurnPlayer(true));
-            Platform.runLater(() -> updateCardsHumanPlayer.setAnimationTakeCard(false,1));
+            Platform.runLater(() -> new InvokerCommand(new SetStyleTurnPlayer(gameUnoController,true)).invoke());
+            Platform.runLater(() -> new InvokerCommand(new SetAnimationTakeCard(gameUnoController,false,1)).invoke());
         } else {
             machinePlayer.removeCard(counter);
             gameUno.playCard(card);
@@ -79,28 +85,37 @@ public class ThreadPlayMachine extends Thread {
             if(gameUno.isEspecialCard(card)){
                 Thread.sleep(1000);
                 playEspecialCard(humanPlayer, card);
-                Platform.runLater(updateCardsHumanPlayer::execute);
+                Platform.runLater(() -> new InvokerCommand(new UpdateCardsHumanPlayer(gameUnoController)).invoke());
                 hasPlayerPlayed = true;
             }else{
-                Platform.runLater(() -> updateCardsHumanPlayer.setStyleTurnPlayer(true));
+                Platform.runLater(() -> new InvokerCommand(new SetStyleTurnPlayer(gameUnoController,true)).invoke());
                 hasPlayerPlayed = false;
             }
         }
     }
 
     public void playEspecialCard(Player player, Card card) throws InterruptedException {
-        if(card.getType().equals("FOUR_WILD")) {;
-            Platform.runLater(() -> updateCardsHumanPlayer.setAnimationTakeCard(true,4));
-            Thread.sleep(1000);
-            gameUno.eatCard(player, 4);
-            getRandomColor();
-        }else if(card.getType().equals("TWO_WILD")) {
-            Platform.runLater(() -> updateCardsHumanPlayer.setAnimationTakeCard(true,2));
-            Thread.sleep(1000);
-            gameUno.eatCard(player, 2);
-        }else if (card.getType().equals("WILD")) {
-            getRandomColor();
-
+        switch (card.getType()) {
+            case "FOUR_WILD" -> {
+                musicGame.playDrawFourSound();
+                Platform.runLater(() -> new InvokerCommand(new SetAnimationTakeCard(gameUnoController, true, 4)).invoke());
+                Thread.sleep(1000);
+                gameUno.eatCard(player, 4);
+                getRandomColor();
+            }
+            case "TWO_WILD" -> {
+                musicGame.playDrawTwoSound();
+                Platform.runLater(() -> new InvokerCommand(new SetAnimationTakeCard(gameUnoController, true, 2)).invoke());
+                Thread.sleep(1000);
+                gameUno.eatCard(player, 2);
+            }
+            case "WILD" -> {getRandomColor();
+                musicGame.playWildCardSound();
+            }case "RESERVE" -> {
+                musicGame.playReverseSound();
+            }case "SKIP" -> {
+                musicGame.playSkipSound();
+            }
         }
     }
 
@@ -114,8 +129,18 @@ public class ThreadPlayMachine extends Thread {
             case "YELLOW" -> tableImageView.setStyle("-fx-effect: dropshadow(gaussian, yellow, 20, 0, 0, 0)");
             case "GREEN" -> tableImageView.setStyle("-fx-effect: dropshadow(gaussian, green, 20, 0, 0, 0)");
         }
+        playSoundColor(color);
         System.out.println("la maquina acaba de escoger el color: "+ color);
         gameUno.setColorChoose(color);
+    }
+
+    private void playSoundColor(String color) {
+        switch (color) {
+            case "BLUE" -> musicGame.playBlueSound();
+            case "RED" -> musicGame.playRedSound();
+            case "YELLOW" -> musicGame.playYellowSound();
+            case "GREEN" -> musicGame.playGreenSound();
+        }
     }
 
     /**

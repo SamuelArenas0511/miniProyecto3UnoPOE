@@ -88,6 +88,16 @@
                   <Image url="@cards-uno/card_uno.png" />
                </image>
             </ImageView>
+            <ImageView fx:id="imgReverse" fitHeight="232.0" fitWidth="231.0" layoutX="383.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/reverse_image.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imgSkip" fitHeight="253.0" fitWidth="258.0" layoutX="367.0" layoutY="-11.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/skip_image.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
    </center>

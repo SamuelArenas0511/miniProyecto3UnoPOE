@@ -14,8 +14,12 @@ public interface IMusic {
     public void playSelectCardSound();
     public void playWildCardSound();
 
-    public void playWinSound();
+    public void playUnoSound();
 
     public void playDaleCardSound();
+    public void playBtnHoverSound();
+    public void playDrawCardSound();
+
+    public void playPutCardSound();
 
 }

@@ -4,20 +4,22 @@ import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 import org.example.eiscuno.controller.GameUnoController;
 import org.example.eiscuno.model.command.Command;
-import org.example.eiscuno.model.command.UpdateCardsHumanPlayer;
+import org.example.eiscuno.model.command.InvokerCommand;
+import org.example.eiscuno.model.command.specific_commads.ShowResult;
+import org.example.eiscuno.model.command.specific_commads.UpdateCardsHumanPlayer;
 
 public class ThreadShowResultGame extends Thread{
     private final GridPane gridPaneCardsMachine;
     private final GridPane gridPaneCardsPlayer;
-    private final Command updateCardsHumanPlayer;
+    private final GameUnoController gameUnoController;
     public volatile boolean running = true;
     private final ThreadPlayMachine threadPlayMachine;
 
     public ThreadShowResultGame(GridPane gridPaneCardsMachine, GridPane gridPaneCardsPlayers, GameUnoController gameUnoController, ThreadPlayMachine threadPlayMachine) {
         this.gridPaneCardsMachine = gridPaneCardsMachine;
         this.gridPaneCardsPlayer = gridPaneCardsPlayers;
-        updateCardsHumanPlayer = new UpdateCardsHumanPlayer(gameUnoController);
         this.threadPlayMachine = threadPlayMachine;
+        this.gameUnoController = gameUnoController;
     }
 
     public void run() {
@@ -39,11 +41,11 @@ public class ThreadShowResultGame extends Thread{
             int cardsMachinePlayer = gridPaneCardsMachine.getChildren().size();
             if (cardsHumanPlayer == 0) {
                 threadPlayMachine.stopThread();
-                Platform.runLater(() -> updateCardsHumanPlayer.showResult(true));
+                Platform.runLater(() -> new InvokerCommand(new ShowResult(gameUnoController,true)).invoke());
                 stopThread();
             } else if (cardsMachinePlayer == 0) {
                 threadPlayMachine.stopThread();
-                Platform.runLater(() -> updateCardsHumanPlayer.showResult(false));
+                Platform.runLater(() -> new InvokerCommand(new ShowResult(gameUnoController,true)).invoke());
                 stopThread();
             }
         });

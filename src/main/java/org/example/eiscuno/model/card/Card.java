@@ -37,8 +37,8 @@ public class Card {
     private ImageView createCardImageView() {
         ImageView card = new ImageView(this.image);
         card.setY(0);
-        card.setFitHeight(90*1.7);
-        card.setFitWidth(70*1.7);
+        card.setFitHeight(164);
+        card.setFitWidth(115);
         return card;
     }
 

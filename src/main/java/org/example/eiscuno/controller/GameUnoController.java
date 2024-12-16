@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -22,6 +23,7 @@ import org.example.eiscuno.model.machine.ThreadPlayMachine;
 import org.example.eiscuno.model.machine.ThreadShowResultGame;
 import org.example.eiscuno.model.machine.ThreadSingUNOMachine;
 import org.example.eiscuno.model.player.Player;
+import org.example.eiscuno.model.sound.music.MusicGame;
 import org.example.eiscuno.model.table.Table;
 import org.example.eiscuno.view.GameUnoStage;
 import org.example.eiscuno.view.WelcomeGameUnoStage;
@@ -58,6 +60,15 @@ public class GameUnoController {
     private Button unoButton;
 
     @FXML
+    private Button btnExit;
+
+    @FXML
+    private Button btnBackCard;
+
+    @FXML
+    private Button btnNextCard;
+
+    @FXML
     private Button takeCardButton;
 
     private Player humanPlayer;
@@ -72,6 +83,8 @@ public class GameUnoController {
     private ThreadPlayMachine threadPlayMachine;
     private ThreadShowResultGame threadShowResultGame;
 
+    private MusicGame musicGame;
+
     /**
      * Initializes the controller.
      */
@@ -83,6 +96,9 @@ public class GameUnoController {
         printCardTable();
         printCardsHumanPlayer();
         setVisibilityButtonsChooseColor();
+
+        musicGame = new MusicGame();
+        musicGame.playBlueSound();
 
 
         threadSingUNOMachine = new ThreadSingUNOMachine(this.humanPlayer, this.machinePlayer, this.gameUno, this.gridPaneCardsPlayer, this);
@@ -286,6 +302,9 @@ public class GameUnoController {
      */
     @FXML
     void onHandleBack(ActionEvent event) {
+        Image defaultEffectImg = new Image(Objects.requireNonNull(getClass().getResource("/org/example/eiscuno/images/button_back_card_click.png")).toExternalForm());
+        ImageInput defaultEffect = new ImageInput(defaultEffectImg, 0, 0);
+        btnBackCard.setEffect(defaultEffect );
         if (this.posInitCardToShow > 0) {
             this.posInitCardToShow--;
             printCardsHumanPlayer();
@@ -300,6 +319,9 @@ public class GameUnoController {
      */
     @FXML
     void onHandleNext(ActionEvent event) {
+        Image defaultEffectImg = new Image(Objects.requireNonNull(getClass().getResource("/org/example/eiscuno/images/button_next_card_click.png")).toExternalForm());
+        ImageInput defaultEffect = new ImageInput(defaultEffectImg, 0, 0);
+        btnNextCard.setEffect(defaultEffect );
         if (this.posInitCardToShow < this.humanPlayer.getCardsPlayer().size() - 4) {
             this.posInitCardToShow++;
             printCardsHumanPlayer();
@@ -373,6 +395,9 @@ public class GameUnoController {
      */
     @FXML
     void onHandleUno(ActionEvent event) {
+        Image clickEffectImg = new Image(Objects.requireNonNull(getClass().getResource("/org/example/eiscuno/images/button_uno_click.png")).toExternalForm());
+        ImageInput clickEffect = new ImageInput(clickEffectImg, 0, 0);
+        unoButton.setEffect(clickEffect);
         System.out.println("machine uno is: "+ gameUno.isMachineSingUno());
         System.out.println("player uno is: "+ gameUno.isPlayerSingUno());
         if ((machinePlayer.getCardsPlayer().size() == 1) && (!gameUno.isMachineSingUno())) {
@@ -426,4 +451,66 @@ public class GameUnoController {
         }
     }
 
+
+    public void onHandleUnoHover(MouseEvent mouseEvent) {
+        Image hoverEffectImg = new Image(Objects.requireNonNull(getClass().getResource("/org/example/eiscuno/images/button_uno_hover.png")).toExternalForm());
+        ImageInput hoverEffect = new ImageInput(hoverEffectImg, 0, 0);
+        unoButton.setEffect(hoverEffect );
+    }
+
+    public void onHandleUnoExited(MouseEvent mouseEvent) {
+        Image defaultEffectImg = new Image(Objects.requireNonNull(getClass().getResource("/org/example/eiscuno/images/button_uno.png")).toExternalForm());
+        ImageInput defaultEffect = new ImageInput(defaultEffectImg, 0, 0);
+        unoButton.setEffect(defaultEffect );
+    }
+
+
+    public void onHandleBtnExitHover(MouseEvent mouseEvent) {
+        Image hoverEffectImg = new Image(Objects.requireNonNull(getClass().getResource("/org/example/eiscuno/images/button_exit_hover.png")).toExternalForm());
+        ImageInput hoverEffect = new ImageInput(hoverEffectImg, 0, 0);
+        btnExit.setEffect(hoverEffect );
+        musicGame.playSelectCardSound();
+    }
+
+    public void onHandleBtnExitExited(MouseEvent mouseEvent) {
+        Image defaultEffectImg = new Image(Objects.requireNonNull(getClass().getResource("/org/example/eiscuno/images/button_exit.png")).toExternalForm());
+        ImageInput defaultEffect = new ImageInput(defaultEffectImg, 0, 0);
+        btnExit.setEffect(defaultEffect );
+    }
+
+    public void onHandleBtnBackHover(MouseEvent mouseEvent) {
+        Image hoverEffectImg = new Image(Objects.requireNonNull(getClass().getResource("/org/example/eiscuno/images/button_back_card_hover.png")).toExternalForm());
+        ImageInput hoverEffect = new ImageInput(hoverEffectImg, 0, 0);
+        btnBackCard.setEffect(hoverEffect );
+    }
+
+    public void onHandleBtnBackExited(MouseEvent mouseEvent) {
+        Image defaultEffectImg = new Image(Objects.requireNonNull(getClass().getResource("/org/example/eiscuno/images/button_back_card.png")).toExternalForm());
+        ImageInput defaultEffect = new ImageInput(defaultEffectImg, 0, 0);
+        btnBackCard.setEffect(defaultEffect );
+    }
+
+    public void onHandlebtnNextCardHover(MouseEvent mouseEvent) {
+        Image hoverEffectImg = new Image(Objects.requireNonNull(getClass().getResource("/org/example/eiscuno/images/button_next_card_hover.png")).toExternalForm());
+        ImageInput hoverEffect = new ImageInput(hoverEffectImg, 0, 0);
+        btnNextCard.setEffect(hoverEffect );
+    }
+
+    public void onHandlebtnNextCardExited(MouseEvent mouseEvent) {
+        Image defaultEffectImg = new Image(Objects.requireNonNull(getClass().getResource("/org/example/eiscuno/images/button_next_card.png")).toExternalForm());
+        ImageInput defaultEffect = new ImageInput(defaultEffectImg, 0, 0);
+        btnNextCard.setEffect(defaultEffect );
+    }
+
+    public void onHanldeDeckCardHover(MouseEvent mouseEvent) {
+        Image hoverEffectImg = new Image(Objects.requireNonNull(getClass().getResource("/org/example/eiscuno/cards-uno/deck_of_cards_hover.png")).toExternalForm());
+        ImageInput hoverEffect = new ImageInput(hoverEffectImg, 0, 0);
+        takeCardButton.setEffect(hoverEffect );
+    }
+
+    public void onHanldeDeckCardExited(MouseEvent mouseEvent) {
+        Image defaultEffectImg = new Image(Objects.requireNonNull(getClass().getResource("/org/example/eiscuno/cards-uno/deck_of_cards.png")).toExternalForm());
+        ImageInput defaultEffect = new ImageInput(defaultEffectImg, 0, 0);
+        takeCardButton.setEffect(defaultEffect );
+    }
 }

@@ -22,7 +22,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Label fx:id="lbContinue" layoutX="451.0" layoutY="553.0" prefHeight="41.0" prefWidth="378.0" styleClass="labelContinue" text="- Press any key to continue -" textFill="WHITE">
+      <Label fx:id="lbContinue" layoutX="469.0" layoutY="553.0" prefHeight="41.0" prefWidth="378.0" styleClass="labelContinue" text="- Press any key to continue -" textFill="WHITE">
          <font>
             <Font name="Montserrat Bold" size="25.0" />
          </font>

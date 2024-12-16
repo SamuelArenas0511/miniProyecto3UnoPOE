@@ -24,7 +24,7 @@
    <center>
       <Pane prefHeight="266.0" prefWidth="946.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="takeCardButton" layoutX="6.0" layoutY="40.0" mnemonicParsing="false" onAction="#onHandleTakeCard" prefHeight="160.0" prefWidth="126.0" styleClass="deckButton">
+            <Button fx:id="takeCardButton" layoutX="6.0" layoutY="11.0" mnemonicParsing="false" onAction="#onHandleTakeCard" onMouseEntered="#onHanldeDeckCardHover" onMouseExited="#onHanldeDeckCardExited" prefHeight="226.0" prefWidth="165.0" styleClass="deckButton">
                <effect>
                   <ImageInput>
                      <source>
@@ -35,7 +35,7 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button fx:id="unoButton" layoutX="803.0" layoutY="46.0" mnemonicParsing="false" onAction="#onHandleUno" prefHeight="149.0" prefWidth="199.0" text="UNO">
+            <Button fx:id="unoButton" layoutX="780.0" layoutY="29.0" mnemonicParsing="false" onAction="#onHandleUno" onMouseEntered="#onHandleUnoHover" onMouseExited="#onHandleUnoExited" prefHeight="183.0" prefWidth="176.0" text="UNO">
                <effect>
                   <ImageInput>
                      <source>
@@ -83,9 +83,24 @@
                   </ImageView>
                </children>
             </Pane>
-            <ImageView fx:id="cardEat" fitHeight="213.0" fitWidth="125.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="cardEat" fitHeight="213.0" fitWidth="125.0" layoutX="26.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@cards-uno/card_uno.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imgReverse" fitHeight="232.0" fitWidth="231.0" layoutX="383.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/reverse_image.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imgSkip" fitHeight="253.0" fitWidth="258.0" layoutX="367.0" layoutY="-11.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/skip_image.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imgUno" fitHeight="164.0" fitWidth="176.0" layoutX="417.0" layoutY="28.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/uno_logo.png" />
                </image>
             </ImageView>
          </children>
@@ -117,26 +132,43 @@
                   <Insets right="150.0" />
                </HBox.margin>
             </GridPane>
-            <Button mnemonicParsing="false" onAction="#onHandleReturnMenuGame" prefHeight="35.0" prefWidth="84.0" style="-fx-background-color: white; -fx-border-radius: 20;" styleClass="buttonNextCard" text="Salir">
+            <Button fx:id="btnExit" mnemonicParsing="false" onAction="#onHandleReturnMenuGame" onMouseEntered="#onHandleBtnExitHover" onMouseExited="#onHandleBtnExitExited" prefHeight="62.0" prefWidth="63.0" style="-fx-background-color: white; -fx-border-radius: 20;">
                <HBox.margin>
-                  <Insets right="20.0" />
+                  <Insets bottom="110.0" left="30.0" />
                </HBox.margin>
                <font>
                   <Font name="Corbel Bold" size="19.0" />
-               </font></Button>
+               </font>
+               <effect>
+                  <ImageInput>
+                     <source>
+                        <Image url="@images/button_exit.png" />
+                     </source>
+                  </ImageInput>
+               </effect>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
          </children>
       </HBox>
    </top>
    <bottom>
       <HBox alignment="CENTER" prefHeight="232.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#onHandleBack" prefHeight="57.0" prefWidth="128.0" style="-fx-background-color: white; -fx-border-radius: 20;" styleClass="buttonNextCard" text="Anterior">
+            <Button fx:id="btnBackCard" mnemonicParsing="false" onAction="#onHandleBack" onMouseEntered="#onHandleBtnBackHover" onMouseExited="#onHandleBtnBackExited" prefHeight="75.0" prefWidth="65.0" style="-fx-background-color: white; -fx-border-radius: 20;" text="Anterior">
                <font>
                   <Font name="Corbel Bold" size="20.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
-               </cursor></Button>
+               </cursor>
+               <effect>
+                  <ImageInput>
+                     <source>
+                        <Image url="@images/button_back_card.png" />
+                     </source>
+                  </ImageInput>
+               </effect></Button>
             <GridPane fx:id="gridPaneCardsPlayer" prefHeight="211.0" prefWidth="672.0">
               <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -148,13 +180,20 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
-            <Button mnemonicParsing="false" onAction="#onHandleNext" prefHeight="57.0" prefWidth="128.0" style="-fx-background-color: WHITE; -fx-border-radius: 20;" styleClass="buttonNextCard" text="Siguiente">
+            <Button fx:id="btnNextCard" mnemonicParsing="false" onAction="#onHandleNext" onMouseEntered="#onHandlebtnNextCardHover" onMouseExited="#onHandlebtnNextCardExited" prefHeight="73.0" prefWidth="65.0" style="-fx-background-color: WHITE; -fx-border-radius: 20;" text="Siguiente">
                <font>
                   <Font name="Corbel Bold" size="20.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
-               </cursor></Button>
+               </cursor>
+               <effect>
+                  <ImageInput>
+                     <source>
+                        <Image url="@images/button_next_card.png" />
+                     </source>
+                  </ImageInput>
+               </effect></Button>
          </children>
       </HBox>
    </bottom>

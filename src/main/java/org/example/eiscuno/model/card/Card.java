@@ -29,6 +29,12 @@ public class Card {
         this.cardImageView = createCardImageView();
     }
 
+    public Card(String value, String color, String type) {
+        this.value = value;
+        this.color = color;
+        this.type = type;
+    }
+
     /**
      * Creates and configures the ImageView for the card.
      *
@@ -37,8 +43,8 @@ public class Card {
     private ImageView createCardImageView() {
         ImageView card = new ImageView(this.image);
         card.setY(0);
-        card.setFitHeight(90*1.7);
-        card.setFitWidth(70*1.7);
+        card.setFitHeight(164);
+        card.setFitWidth(115);
         return card;
     }
 

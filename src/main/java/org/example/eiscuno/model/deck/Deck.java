@@ -13,7 +13,7 @@ import java.util.Stack;
  * Represents a deck of Uno cards.
  */
 public class Deck {
-    private Stack<Card> deckOfCards;
+    public Stack<Card> deckOfCards;
     private CardFactory cardFactory;
 
     /**
@@ -116,16 +116,7 @@ public class Deck {
      * @throws IllegalStateException if the deck is empty
      */
     public Card takeCard() {
-        try{
-            if (deckOfCards.isEmpty()) {
-                throw new emptyDeckException("No hay más cartas en el mazo.");
-            }else{
-                return deckOfCards.pop();
-            }
-        }catch (emptyDeckException e){
-            System.out.println(e.getMessage());
-            return null;
-        }
+        return deckOfCards.pop();
     }
 
     /**

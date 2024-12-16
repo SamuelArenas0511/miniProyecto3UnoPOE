@@ -18,6 +18,11 @@ public class UpdateCardsHumanPlayer implements Command {
     }
 
     @Override
+    public void deckEmpty(Boolean success) {
+        controller.showResultDeckAlert(success);
+    }
+
+    @Override
     public void setAnimationTakeCard(boolean player, int numCard) {
         controller.setAnimationTakeCard(player, numCard);
     }

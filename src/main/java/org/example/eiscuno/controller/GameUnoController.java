@@ -94,7 +94,7 @@ public class GameUnoController {
         threadPlayMachine.start();
         threadPlayMachine.printCardsMachinePlayer();
 
-        threadShowResultGame = new ThreadShowResultGame(this.gridPaneCardsMachine, this.gridPaneCardsPlayer, this, threadPlayMachine);
+        threadShowResultGame = new ThreadShowResultGame(this.gridPaneCardsMachine, this.gridPaneCardsPlayer, this, threadPlayMachine, gameUno);
         Thread threadShowResult = new Thread(threadShowResultGame, "ThreadShowResult");
         threadShowResult.start();
     }
@@ -412,6 +412,36 @@ public class GameUnoController {
         alert.setContentText(isWinner ? "¡Ganaste!" : "Perdiste. ¡Mejor suerte la próxima vez!");
         alert.showAndWait();
     }
+
+    public void showResultDeckAlert(Boolean isWinner) {
+        threadPlayMachine.setHasPlayerPlayed(false);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("No hay más cartas en el mazo");
+        alert.setHeaderText(null);
+
+        Button btnAceptar = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+        btnAceptar.setOnAction(event -> {
+            threadShowResultGame.stopThread();
+            GameUnoStage.deleteInstance();
+            try {
+                WelcomeGameUnoStage.getInstance();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        // Modificación para manejar el caso de empate
+        if (isWinner == null) {
+            alert.setContentText("¡Empate! Ambos jugadores tienen la misma cantidad de cartas.");
+        } else if (isWinner) {
+            alert.setContentText("¡Ganaste, tienes el menor número de cartas!");
+        } else {
+            alert.setContentText("Perdiste, tienes un mayor número de cartas. ¡Mejor suerte la próxima vez!");
+        }
+
+        alert.showAndWait();
+    }
+
 
     public void turnPlayerStyle(boolean turnPlayer) {
         for (Node node : gridPaneCardsPlayer.getChildren()) {

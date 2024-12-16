@@ -4,7 +4,7 @@ import org.example.eiscuno.model.sound.Sound;
 
 public class MusicGame implements IMusic{
 
-    private Sound sound;
+    private static Sound sound;
 
     public MusicGame(){
         sound = new Sound();
@@ -104,5 +104,6 @@ public class MusicGame implements IMusic{
         sound.playSound();
         sound.lowerVolume(10.0f);
     }
+
 
 }

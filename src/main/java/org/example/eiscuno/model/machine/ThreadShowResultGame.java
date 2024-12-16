@@ -8,6 +8,7 @@ import org.example.eiscuno.model.command.InvokerCommand;
 import org.example.eiscuno.model.command.specific_commads.ShowResult;
 import org.example.eiscuno.model.command.specific_commads.ShowResultDeck;
 import org.example.eiscuno.model.command.specific_commads.UpdateCardsHumanPlayer;
+import org.example.eiscuno.model.game.GameUno;
 
 public class ThreadShowResultGame extends Thread{
     private final GridPane gridPaneCardsMachine;
@@ -15,12 +16,14 @@ public class ThreadShowResultGame extends Thread{
     private final GameUnoController gameUnoController;
     public volatile boolean running = true;
     private final ThreadPlayMachine threadPlayMachine;
+    private GameUno gameUno;
 
-    public ThreadShowResultGame(GridPane gridPaneCardsMachine, GridPane gridPaneCardsPlayers, GameUnoController gameUnoController, ThreadPlayMachine threadPlayMachine) {
+    public ThreadShowResultGame(GridPane gridPaneCardsMachine, GridPane gridPaneCardsPlayers, GameUnoController gameUnoController, ThreadPlayMachine threadPlayMachine, GameUno gameUno) {
         this.gridPaneCardsMachine = gridPaneCardsMachine;
         this.gridPaneCardsPlayer = gridPaneCardsPlayers;
         this.threadPlayMachine = threadPlayMachine;
         this.gameUnoController = gameUnoController;
+        this.gameUno = gameUno;
     }
 
     public void run() {
@@ -40,7 +43,7 @@ public class ThreadShowResultGame extends Thread{
         Platform.runLater(() -> {
             int cardsHumanPlayer = gridPaneCardsPlayer.getChildren().size();
             int cardsMachinePlayer = gridPaneCardsMachine.getChildren().size();
-            if (gameUnoController.gameUno.deck.deckOfCards.isEmpty()){
+            if (gameUno.deck.deckOfCards.isEmpty()){
                 if (cardsHumanPlayer < cardsMachinePlayer) {
                     threadPlayMachine.stopThread();
                     Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, Boolean.TRUE)).invoke());

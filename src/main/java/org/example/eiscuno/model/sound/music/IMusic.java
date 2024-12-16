@@ -21,5 +21,4 @@ public interface IMusic {
     public void playDrawCardSound();
 
     public void playPutCardSound();
-
 }

@@ -3,8 +3,10 @@ package org.example.eiscuno.controller;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -14,6 +16,7 @@ import javafx.util.Duration;
 import org.example.eiscuno.controller.ButtonsHoverEffects.ButtonEffects;
 import org.example.eiscuno.controller.animationsUtils.AnimationUtils;
 import org.example.eiscuno.model.card.Card;
+import org.example.eiscuno.model.command.specific_commads.ShowResultDeck;
 import org.example.eiscuno.model.deck.Deck;
 import org.example.eiscuno.model.game.GameUno;
 import org.example.eiscuno.model.machine.ThreadPlayMachine;
@@ -74,7 +77,10 @@ public class GameUnoController {
     @FXML
     private ImageView imgSkip;
 
-    private Player humanPlayer;
+    @FXML
+    private ImageView imgUno;
+
+    public Player humanPlayer;
     private Player machinePlayer;
     private Table table;
     private GameUno gameUno;
@@ -85,6 +91,8 @@ public class GameUnoController {
 
     private MusicGame musicGame;
     private Sound mainMusicGame;
+    private Sound winSound;
+    private Sound loseSound;
 
     /**
      * Initializes the controller.
@@ -111,6 +119,11 @@ public class GameUnoController {
         mainMusicGame = new Sound();
         mainMusicGame.loadSound("src/main/resources/org/example/eiscuno/sounds/sounds-game/main_game_sound.WAV");
         mainMusicGame.loopSound();
+
+        winSound = new Sound();
+        winSound.loadSound("src/main/resources/org/example/eiscuno/sounds/sounds-game/win_game_sound.WAV");
+        loseSound = new Sound();
+        loseSound.loadSound("src/main/resources/org/example/eiscuno/sounds/sounds-game/lose_game_sound.WAV");
     }
 
     /**
@@ -123,19 +136,20 @@ public class GameUnoController {
         threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.humanPlayer, this.tableImageView, this.gameUno, this.gridPaneCardsMachine, this);
         threadPlayMachine.start();
         threadPlayMachine.printCardsMachinePlayer();
-        ThreadShowResultGame threadShowResultGame = new ThreadShowResultGame(this.gridPaneCardsMachine, this.gridPaneCardsPlayer, this, threadPlayMachine);
+        ThreadShowResultGame threadShowResultGame = new ThreadShowResultGame(this.gridPaneCardsMachine, this.gridPaneCardsPlayer, this, threadPlayMachine, this.gameUno);
         Thread threadShowResult = new Thread(threadShowResultGame, "ThreadShowResult");
         threadShowResult.start();
     }
 
     private void setVisibilityButtonsChooseColor() {
+        pnBtnChooseColor.toFront();
         pnBtnChooseColor.setVisible(!pnBtnChooseColor.isVisible());
     }
 
     /**
      * Initializes the variables for the game.
      */
-    private void initVariables() {
+    public void initVariables() {
         this.humanPlayer = new Player("HUMAN_PLAYER");
         this.machinePlayer = new Player("MACHINE_PLAYER");
         Deck deck = new Deck();
@@ -197,7 +211,7 @@ public class GameUnoController {
     /**
      * Determines if the selected card is valid
      */
-    private void selectedCard(Card card) {
+    public void selectedCard(Card card) {
         if (gameUno.isCardPlayable(card) && !threadPlayMachine.isHasPlayerPlayed()) {
             musicGame.playPutCardSound();
             gameUno.playCard(card);
@@ -402,7 +416,6 @@ public class GameUnoController {
      */
     @FXML
     void onHandleUno(ActionEvent event) {
-        musicGame.playUnoSound();
         ButtonEffects.applyHoverEffect(unoButton, "/org/example/eiscuno/images/button_uno_click.png");
         if ((machinePlayer.getCardsPlayer().size() == 1) && (!gameUno.isMachineSingUno())) {
             gameUno.eatCard(machinePlayer, 1);
@@ -411,6 +424,7 @@ public class GameUnoController {
         if ((humanPlayer.getCardsPlayer().size() == 1)&&(!gameUno.isMachineSingUno())&&(!gameUno.isPlayerSingUno())) {
             gameUno.setPlayerSingUno(true);
             musicGame.playUnoSound();
+            AnimationUtils.unoAnimation(imgUno);
         }
 
     }
@@ -423,12 +437,15 @@ public class GameUnoController {
     }
 
     public void showResultAlert(boolean isWinner) {
+        mainMusicGame.stopSound();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("No hay más cartas en el mazo");
+        alert.setTitle("RESULTADOS");
         alert.setHeaderText(null);
 
         Button btnAceptar = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
         btnAceptar.setOnAction(event -> {
+            winSound.stopSound();
+            loseSound.stopSound();
             GameUnoStage.deleteInstance();
             try {
                 WelcomeGameUnoStage.getInstance();
@@ -437,10 +454,11 @@ public class GameUnoController {
             }
         });
 
-        // Modificación para manejar el caso de empate
         if (isWinner) {
+            winSound.playSound();
             alert.setContentText("¡Felicitaciones ganaste!");
         } else {
+            loseSound.playSound();
             alert.setContentText("Perdiste ¡Mejor suerte la próxima vez!");
         }
 
@@ -448,12 +466,15 @@ public class GameUnoController {
     }
 
     public void showResultDeckAlert(Boolean isWinner) {
+        mainMusicGame.stopSound();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("No hay más cartas en el mazo");
         alert.setHeaderText(null);
 
         Button btnAceptar = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
         btnAceptar.setOnAction(event -> {
+            winSound.stopSound();
+            loseSound.stopSound();
             GameUnoStage.deleteInstance();
             try {
                 WelcomeGameUnoStage.getInstance();
@@ -462,12 +483,14 @@ public class GameUnoController {
             }
         });
 
-        // Modificación para manejar el caso de empate
         if (isWinner == null) {
+            winSound.playSound();
             alert.setContentText("¡Empate! Ambos jugadores tienen la misma cantidad de cartas.");
         } else if (isWinner) {
+            winSound.playSound();
             alert.setContentText("¡Ganaste, tienes el menor número de cartas!");
         } else {
+            loseSound.playSound();
             alert.setContentText("Perdiste, tienes un mayor número de cartas. ¡Mejor suerte la próxima vez!");
         }
 

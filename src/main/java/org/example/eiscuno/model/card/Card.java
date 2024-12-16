@@ -29,6 +29,12 @@ public class Card {
         this.cardImageView = createCardImageView();
     }
 
+    public Card(String value, String color, String type) {
+        this.value = value;
+        this.color = color;
+        this.type = type;
+    }
+
     /**
      * Creates and configures the ImageView for the card.
      *

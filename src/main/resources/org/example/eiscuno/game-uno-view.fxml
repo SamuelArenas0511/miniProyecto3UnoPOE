@@ -103,11 +103,6 @@
                   <Image url="@images/uno_logo.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="imgWin" fitHeight="404.0" fitWidth="452.0" layoutX="298.0" layoutY="-78.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/win_image.png" />
-               </image>
-            </ImageView>
          </children>
       </Pane>
    </center>

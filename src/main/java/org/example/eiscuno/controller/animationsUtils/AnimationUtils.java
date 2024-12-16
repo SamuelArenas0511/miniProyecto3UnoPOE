@@ -171,4 +171,45 @@ public class AnimationUtils {
 
         animation.play();
     }
+
+    public static void unoAnimation(ImageView unoImageView){
+        unoImageView.setOpacity(0);
+
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.2), unoImageView);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        ScaleTransition scaleUp = new ScaleTransition(Duration.seconds(0.5), unoImageView);
+        scaleUp.setFromX(1.0);
+        scaleUp.setFromY(1.0);
+        scaleUp.setToX(1.5);
+        scaleUp.setToY(1.5);
+
+        ScaleTransition scaleDown = new ScaleTransition(Duration.seconds(0.7), unoImageView);
+        scaleDown.setFromX(1.6);
+        scaleDown.setFromY(1.6);
+        scaleDown.setToX(1.0);
+        scaleDown.setToY(1.0);
+
+
+        DropShadow glowEffect = new DropShadow();
+        glowEffect.setColor(Color.WHITE);
+        glowEffect.setRadius(20);
+        glowEffect.setSpread(0.4);
+
+        unoImageView.setEffect(glowEffect);
+
+        SequentialTransition animation = new SequentialTransition(
+                fadeIn,
+                scaleUp,
+                scaleDown
+        );
+
+        animation.setOnFinished(event -> {
+            unoImageView.setEffect(null);
+            unoImageView.setOpacity(0);
+        });
+
+        animation.play();
+    }
 }

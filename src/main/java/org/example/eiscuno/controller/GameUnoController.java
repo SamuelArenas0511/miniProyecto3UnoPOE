@@ -3,19 +3,13 @@ package org.example.eiscuno.controller;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.example.eiscuno.controller.ButtonsHoverEffects.ButtonEffects;
 import org.example.eiscuno.controller.animationsUtils.AnimationUtils;
@@ -80,14 +74,6 @@ public class GameUnoController {
     @FXML
     private ImageView imgSkip;
 
-    @FXML
-    private ImageView imgUno;
-
-    @FXML
-    private ImageView imgWin;
-
-
-
     private Player humanPlayer;
     private Player machinePlayer;
     private Table table;
@@ -143,7 +129,6 @@ public class GameUnoController {
     }
 
     private void setVisibilityButtonsChooseColor() {
-        pnBtnChooseColor.toFront();
         pnBtnChooseColor.setVisible(!pnBtnChooseColor.isVisible());
     }
 
@@ -418,8 +403,6 @@ public class GameUnoController {
     @FXML
     void onHandleUno(ActionEvent event) {
         musicGame.playUnoSound();
-        AnimationUtils.unoAnimation(imgUno);
-        showResultAlert(true);
         ButtonEffects.applyHoverEffect(unoButton, "/org/example/eiscuno/images/button_uno_click.png");
         if ((machinePlayer.getCardsPlayer().size() == 1) && (!gameUno.isMachineSingUno())) {
             gameUno.eatCard(machinePlayer, 1);
@@ -428,7 +411,6 @@ public class GameUnoController {
         if ((humanPlayer.getCardsPlayer().size() == 1)&&(!gameUno.isMachineSingUno())&&(!gameUno.isPlayerSingUno())) {
             gameUno.setPlayerSingUno(true);
             musicGame.playUnoSound();
-            AnimationUtils.unoAnimation(imgUno);
         }
 
     }
@@ -441,8 +423,57 @@ public class GameUnoController {
     }
 
     public void showResultAlert(boolean isWinner) {
-        System.out.println(isWinner);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("No hay más cartas en el mazo");
+        alert.setHeaderText(null);
+
+        Button btnAceptar = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+        btnAceptar.setOnAction(event -> {
+            GameUnoStage.deleteInstance();
+            try {
+                WelcomeGameUnoStage.getInstance();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        // Modificación para manejar el caso de empate
+        if (isWinner) {
+            alert.setContentText("¡Felicitaciones ganaste!");
+        } else {
+            alert.setContentText("Perdiste ¡Mejor suerte la próxima vez!");
+        }
+
+        alert.showAndWait();
     }
+
+    public void showResultDeckAlert(Boolean isWinner) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("No hay más cartas en el mazo");
+        alert.setHeaderText(null);
+
+        Button btnAceptar = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+        btnAceptar.setOnAction(event -> {
+            GameUnoStage.deleteInstance();
+            try {
+                WelcomeGameUnoStage.getInstance();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        // Modificación para manejar el caso de empate
+        if (isWinner == null) {
+            alert.setContentText("¡Empate! Ambos jugadores tienen la misma cantidad de cartas.");
+        } else if (isWinner) {
+            alert.setContentText("¡Ganaste, tienes el menor número de cartas!");
+        } else {
+            alert.setContentText("Perdiste, tienes un mayor número de cartas. ¡Mejor suerte la próxima vez!");
+        }
+
+        alert.showAndWait();
+    }
+
 
     public void turnPlayerStyle(boolean turnPlayer) {
         String style = turnPlayer

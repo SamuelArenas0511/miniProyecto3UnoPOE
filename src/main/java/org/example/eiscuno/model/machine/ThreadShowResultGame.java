@@ -6,6 +6,7 @@ import org.example.eiscuno.controller.GameUnoController;
 import org.example.eiscuno.model.command.Command;
 import org.example.eiscuno.model.command.InvokerCommand;
 import org.example.eiscuno.model.command.specific_commads.ShowResult;
+import org.example.eiscuno.model.command.specific_commads.ShowResultDeck;
 import org.example.eiscuno.model.command.specific_commads.UpdateCardsHumanPlayer;
 
 public class ThreadShowResultGame extends Thread{
@@ -39,13 +40,28 @@ public class ThreadShowResultGame extends Thread{
         Platform.runLater(() -> {
             int cardsHumanPlayer = gridPaneCardsPlayer.getChildren().size();
             int cardsMachinePlayer = gridPaneCardsMachine.getChildren().size();
+            if (gameUnoController.gameUno.deck.deckOfCards.isEmpty()){
+                if (cardsHumanPlayer < cardsMachinePlayer) {
+                    threadPlayMachine.stopThread();
+                    Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, Boolean.TRUE)).invoke());
+                    stopThread();
+                } else if (cardsHumanPlayer == cardsMachinePlayer) {
+                    threadPlayMachine.stopThread();
+                    Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, null)).invoke());
+                    stopThread();
+                } else {
+                    threadPlayMachine.stopThread();
+                    Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, Boolean.FALSE)).invoke());
+                    stopThread();
+                }
+            }
             if (cardsHumanPlayer == 0) {
                 threadPlayMachine.stopThread();
                 Platform.runLater(() -> new InvokerCommand(new ShowResult(gameUnoController,true)).invoke());
                 stopThread();
             } else if (cardsMachinePlayer == 0) {
                 threadPlayMachine.stopThread();
-                Platform.runLater(() -> new InvokerCommand(new ShowResult(gameUnoController,true)).invoke());
+                Platform.runLater(() -> new InvokerCommand(new ShowResult(gameUnoController,false)).invoke());
                 stopThread();
             }
         });

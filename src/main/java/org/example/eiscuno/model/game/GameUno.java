@@ -15,7 +15,7 @@ public class GameUno implements IGameUno {
 
     private final Player humanPlayer;
     private final Player machinePlayer;
-    private final Deck deck;
+    public final Deck deck;
     private final Table table;
     private String colorChoose;
     private boolean playerSingUno;
@@ -75,7 +75,12 @@ public class GameUno implements IGameUno {
     @Override
     public void eatCard(Player player, int numberOfCards) {
         for (int i = 0; i < numberOfCards; i++) {
-            player.addCard(this.deck.takeCard());
+            if (deck.deckOfCards.size()==0){
+                break;
+            } else {
+                player.addCard(this.deck.takeCard());
+                System.out.println(deck.deckOfCards.size());
+            }
         }
         if (player==humanPlayer) {
             if(isPlayerSingUno()){

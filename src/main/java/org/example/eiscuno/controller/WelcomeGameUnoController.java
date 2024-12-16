@@ -26,7 +26,7 @@ public class WelcomeGameUnoController {
     private void startMainMusic() {
         mainSound = new Sound();
         buttonSound = new Sound();
-        buttonSound.loadSound("src/main/resources/org/example/eiscuno/sounds/buttonSound.wav");
+        buttonSound.loadSound("src/main/resources/org/example/eiscuno/sounds/buttonSound.WAV");
         mainSound.loadSound("src/main/resources/org/example/eiscuno/sounds/mainMusic.wav");
         mainSound.loopSound();
         buttonSound.lowerVolume(2.1f);

@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import org.example.eiscuno.controller.GameUnoController;
 import org.example.eiscuno.model.card.Card;
 import org.example.eiscuno.model.command.InvokerCommand;
+import org.example.eiscuno.model.command.specific_commads.ShowResult;
 import org.example.eiscuno.model.command.specific_commads.ShowResultDeck;
 import org.example.eiscuno.model.deck.Deck;
 import org.example.eiscuno.model.player.Player;
@@ -183,6 +184,9 @@ public class GameUno extends GameAdapter {
     public void isGameOver(Player player) {
         if(player.getCardsPlayer().isEmpty()){
             System.out.println("Gamefinish playing");
+            if(Objects.equals(player.getTypePlayer(), "HUMAN_PLAYER")){
+                Platform.runLater(() -> new InvokerCommand(new ShowResult(gameUnoController, Boolean.TRUE)).invoke());
+            }
         } else if (deck.isEmpty()) {
             System.out.println("Gamefinish deck");
             if (getHumanPlayer().getCardsPlayer().size() <getMachinePlayer().getCardsPlayer().size()) {

@@ -227,20 +227,27 @@ public class GameUnoController {
             tableImageView.setImage(card.getImage());
             humanPlayer.removeCard(findPosCardsHumanPlayer(card));
             if (gameUno.isEspecialCard(card)) {
+                printCardsHumanPlayer();
                 playEspecialCard(machinePlayer, card);
                 threadPlayMachine.printCardsMachinePlayer();
                 if(gameUno.isPlayerEmpty(humanPlayer)){
+                    System.out.println("isplayerEmpty");
                     gameUno.isGameOver(humanPlayer);
+                    return;
                 }
             } else {
-                threadPlayMachine.setHasPlayerPlayed(true);
+                printCardsHumanPlayer();
+                turnPlayerStyle(false);
                 if(gameUno.isPlayerEmpty(humanPlayer)){
+                    System.out.println("isplayerEmpty");
                     gameUno.isGameOver(humanPlayer);
+                    return;
                 }
+                threadPlayMachine.setHasPlayerPlayed(true);
             }
-            printCardsHumanPlayer();
-            turnPlayerStyle(false);
+
         }
+
     }
 
     /**
@@ -483,6 +490,7 @@ public class GameUnoController {
      * @param isWinner true if the player wins, false if the player loses.
      */
     public void showResultAlert(boolean isWinner) {
+        threadPlayMachine.setHasPlayerPlayed(false);
         mainMusicGame.stopSound();
         if (isWinner) {
             for (int k = 0; k<500;k++){
@@ -503,6 +511,7 @@ public class GameUnoController {
      * @param isWinner null for a tie, true if the player wins, false if the player loses.
      */
     public void showResultDeckAlert(Boolean isWinner) {
+        threadPlayMachine.setHasPlayerPlayed(false);
         mainMusicGame.stopSound();
         if (isWinner == null) {
             for (int k = 0; k<500;k++){

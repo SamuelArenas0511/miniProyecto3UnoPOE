@@ -7,6 +7,9 @@
     <list default="true" id="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/game/GameUno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/game/GameUno.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadPlayMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadPlayMachine.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +23,8 @@
         <option value="Enum" />
         <option value="CSS File" />
         <option value="JUnit5 Test Class" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -40,12 +43,12 @@
     &quot;assignee&quot;: &quot;fabiansvc&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/SamuelArenas0511/miniProyecto3UnoPOE.git&quot;,
-    &quot;accountId&quot;: &quot;37ddfd15-3166-4e14-9539-4ab67cb841f8&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/SamuelArenas0511/miniProyecto3UnoPOE.git",
+    "accountId": "37ddfd15-3166-4e14-9539-4ab67cb841f8"
   }
-}</component>
+}]]></component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -60,9 +63,7 @@
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="2h51MgXC3VsYGUopaGajj22IER5" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="1" id="Add" />
-  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -72,21 +73,20 @@
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.HelloApplication.executor": "Run",
     "Application.Main.executor": "Run",
-    "JUnit.CardTest.executor": "Run",
-    "JUnit.GameUnoTest.executor": "Run",
+    "JUnit.CardTest.testGetters.executor": "Run",
     "JUnit.GameUnoTest.testCardHasBeenPlayed.executor": "Run",
     "JUnit.GameUnoTest.testGameResultsHumanPlayerWins.executor": "Run",
     "JUnit.GameUnoTest.testIsCardPlayable.executor": "Run",
     "JUnit.GameUnoTest.testIsCardPlayable_WildCard.executor": "Run",
     "JUnit.GameUnoTest.testIsNotCardPlayable.executor": "Run",
-    "JUnit.TableTest.testGetCurrentCardWhenTableIsEmpty.executor": "Debug",
+    "JUnit.TableTest.testGetCurrentCardWhenTableIsEmpty.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "mjst",
+    "git-widget-placeholder": "Merging mjst",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Windows 10 Pro/Desktop/Miniproyecto Uno #4",
@@ -132,7 +132,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CardTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CardTest.testGetters" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="eisc-uno" />
       <extension name="coverage">
         <pattern>
@@ -142,12 +142,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="org.example.eiscuno.model.card" />
       <option name="MAIN_CLASS_NAME" value="org.example.eiscuno.model.card.CardTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="METHOD_NAME" value="testGetters" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GameUnoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="GameUnoTest.testCardHasBeenPlayed" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="eisc-uno" />
       <extension name="coverage">
         <pattern>
@@ -157,7 +158,8 @@
       </extension>
       <option name="PACKAGE_NAME" value="org.example.eiscuno.model.game" />
       <option name="MAIN_CLASS_NAME" value="org.example.eiscuno.model.game.GameUnoTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="METHOD_NAME" value="testCardHasBeenPlayed" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -196,18 +198,18 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
-      <item itemvalue="JUnit.CardTest" />
-      <item itemvalue="JUnit.GameUnoTest" />
+      <item itemvalue="JUnit.CardTest.testGetters" />
       <item itemvalue="JUnit.TableTest.testGetCurrentCardWhenTableIsEmpty" />
+      <item itemvalue="JUnit.GameUnoTest.testCardHasBeenPlayed" />
       <item itemvalue="JUnit.GameUnoTest.testIsCardPlayable" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.TableTest.testGetCurrentCardWhenTableIsEmpty" />
-        <item itemvalue="JUnit.GameUnoTest" />
-        <item itemvalue="JUnit.CardTest" />
+        <item itemvalue="JUnit.GameUnoTest.testCardHasBeenPlayed" />
         <item itemvalue="JUnit.GameUnoTest.testIsCardPlayable" />
+        <item itemvalue="JUnit.CardTest.testGetters" />
       </list>
     </recent_temporary>
   </component>
@@ -259,7 +261,9 @@
       <workItem from="1733448919063" duration="4980000" />
       <workItem from="1733950975556" duration="8271000" />
       <workItem from="1734322377219" duration="15037000" />
-      <workItem from="1734451025819" duration="718000" />
+      <workItem from="1734452171036" duration="1705000" />
+      <workItem from="1734453887117" duration="554000" />
+      <workItem from="1734454953115" duration="679000" />
     </task>
     <servers />
   </component>

@@ -46,8 +46,8 @@ public class ThreadPlayMachine extends Thread {
     }
 
     public void run() {
-        while (true){
-            if(hasPlayerPlayed && running){
+        while (true) {
+            if((hasPlayerPlayed) && (running)){
                 try{
                     Thread.sleep(3000);
                     putCardOnTheTable();
@@ -187,6 +187,7 @@ public class ThreadPlayMachine extends Thread {
     public boolean isHasPlayerPlayed(){
         return this.hasPlayerPlayed;
     }
+
     public void stopThread() {
         running = false;
     }

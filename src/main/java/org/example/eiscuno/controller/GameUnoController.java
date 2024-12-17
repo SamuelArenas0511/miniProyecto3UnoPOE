@@ -419,6 +419,7 @@ public class GameUnoController {
         ButtonEffects.applyHoverEffect(unoButton, "/org/example/eiscuno/images/button_uno_click.png");
         if ((machinePlayer.getCardsPlayer().size() == 1) && (!gameUno.isMachineSingUno())) {
             gameUno.eatCard(machinePlayer, 1);
+            System.out.println("MAQUINA COME POR NO CANTAR");
             threadPlayMachine.printCardsMachinePlayer();
         }
         if ((humanPlayer.getCardsPlayer().size() == 1)&&(!gameUno.isMachineSingUno())&&(!gameUno.isPlayerSingUno())) {

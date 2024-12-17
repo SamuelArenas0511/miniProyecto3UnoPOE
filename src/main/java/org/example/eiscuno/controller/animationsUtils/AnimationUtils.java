@@ -5,8 +5,12 @@ import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
+import java.util.Random;
 
 public class AnimationUtils {
 
@@ -211,5 +215,34 @@ public class AnimationUtils {
         });
 
         animation.play();
+    }
+
+    public static void createConfetti(Pane pane, double startX, double startY) {
+        Random random = new Random();
+
+        Rectangle confetti = new Rectangle(random.nextInt(5)+2,random.nextInt(5)+2, getRandomColor());
+        confetti.setLayoutX(startX + random.nextInt(2000)); // Posición inicial cercana al TextField
+        confetti.setLayoutY(startY-20);
+
+        pane.getChildren().add(confetti);
+
+        double paneHeight = pane.getHeight();
+
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(random.nextDouble(7)+2), confetti);
+        transition.setByY(paneHeight - startY); // Caída hasta el final de la pantalla
+        transition.setByX(random.nextInt(200) - 25); // Movimiento lateral aleatorio
+        transition.setInterpolator(Interpolator.LINEAR); // Movimiento suave y constante
+        transition.setOnFinished(e -> pane.getChildren().remove(confetti)); // Eliminar confeti cuando caiga
+        transition.play();
+    }
+
+    /**
+     * Generates a random color by creating an RGB color with random values for red, green, and blue components.
+     *
+     * @return A randomly generated Color object.
+     */
+    private static Color getRandomColor() {
+        Random random = new Random();
+        return Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
     }
 }

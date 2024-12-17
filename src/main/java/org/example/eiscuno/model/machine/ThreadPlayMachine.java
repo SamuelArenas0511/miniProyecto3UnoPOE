@@ -46,12 +46,11 @@ public class ThreadPlayMachine extends Thread {
         while (true) {
             if((hasPlayerPlayed) && (running)){
                 try{
-                    Thread.sleep(3000);
+                    Thread.sleep(2000);
                     putCardOnTheTable();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
         }
     }

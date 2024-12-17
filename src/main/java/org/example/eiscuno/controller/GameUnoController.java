@@ -16,6 +16,7 @@ import javafx.scene.layout.*;
 import javafx.util.Duration;
 import org.example.eiscuno.controller.ButtonsHoverEffects.ButtonEffects;
 import org.example.eiscuno.controller.animationsUtils.AnimationUtils;
+import org.example.eiscuno.controller.resultalerts.ResultAlerts;
 import org.example.eiscuno.model.card.Card;
 
 import org.example.eiscuno.model.command.InvokerCommand;
@@ -470,63 +471,36 @@ public class GameUnoController {
 
     public void showResultAlert(boolean isWinner) {
         mainMusicGame.stopSound();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("RESULTADOS");
-        alert.setHeaderText(null);
-
-        Button btnAceptar = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
-        btnAceptar.setOnAction(event -> {
-            winSound.stopSound();
-            loseSound.stopSound();
-            GameUnoStage.deleteInstance();
-            try {
-                WelcomeGameUnoStage.getInstance();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
         if (isWinner) {
+            for (int k = 0; k<500;k++){
+                AnimationUtils.createConfetti(borderPaneGame,borderPaneGame.getLayoutX(),borderPaneGame.getLayoutY());
+            }
             winSound.playSound();
-            alert.setContentText("¡Felicitaciones ganaste!");
+            ResultAlerts.winAlert(winSound, "¡¡Felicidades Has Ganado!! \n", "\t  !VICTORIA!\n");
         } else {
             loseSound.playSound();
-            alert.setContentText("Perdiste ¡Mejor suerte la próxima vez!");
+            ResultAlerts.LoseAlert(loseSound,"Ha ganado la maquina :( \n", "\tDERROTA\n" );
         }
-
-        alert.showAndWait();
     }
 
     public void showResultDeckAlert(Boolean isWinner) {
         mainMusicGame.stopSound();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("No hay más cartas en el mazo");
-        alert.setHeaderText(null);
-
-        Button btnAceptar = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
-        btnAceptar.setOnAction(event -> {
-            winSound.stopSound();
-            loseSound.stopSound();
-            GameUnoStage.deleteInstance();
-            try {
-                WelcomeGameUnoStage.getInstance();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
         if (isWinner == null) {
+            for (int k = 0; k<500;k++){
+                AnimationUtils.createConfetti(borderPaneGame,borderPaneGame.getLayoutX(),borderPaneGame.getLayoutY());
+            }
             winSound.playSound();
-            alert.setContentText("¡Empate! Ambos jugadores tienen la misma cantidad de cartas.");
+            ResultAlerts.winAlert(winSound, "\t     ¡¡Han quedado en Empate,\n ambos tienen el mismo numero de cartas!! \n", "\t    SE ACABARON LAS CARTAS\n");
         } else if (isWinner) {
+            for (int k = 0; k<500;k++){
+                AnimationUtils.createConfetti(borderPaneGame,borderPaneGame.getLayoutX(),borderPaneGame.getLayoutY());
+            }
             winSound.playSound();
-            alert.setContentText("¡Ganaste, tienes el menor número de cartas!");
+            ResultAlerts.winAlert(winSound, "¡¡Felicidades , Has ganado, tienes menos cartas!! \n", "\t\tSE ACABARON LAS CARTAS\n");
         } else {
             loseSound.playSound();
-            alert.setContentText("Perdiste, tienes un mayor número de cartas. ¡Mejor suerte la próxima vez!");
+            ResultAlerts.LoseAlert(loseSound,"Has perdido, tu opente tiene menos cartas \n", "\tSE ACABARON LAS CARTAS\n" );
         }
-
-        alert.showAndWait();
     }
 
 

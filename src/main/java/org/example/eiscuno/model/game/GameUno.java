@@ -11,7 +11,7 @@ import java.util.Objects;
  * Represents a game of Uno.
  * This class manages the game logic and interactions between players, deck, and the table.
  */
-public class GameUno implements IGameUno {
+public class GameUno extends GameAdapter {
 
     private final Player humanPlayer;
     private final Player machinePlayer;

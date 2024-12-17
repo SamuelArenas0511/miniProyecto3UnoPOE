@@ -30,6 +30,8 @@ import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.sound.Sound;
 import org.example.eiscuno.model.sound.music.MusicGame;
 import org.example.eiscuno.model.table.Table;
+import org.example.eiscuno.model.table.bridge.ITableImplementation;
+import org.example.eiscuno.model.table.bridge.TableImplementation;
 import org.example.eiscuno.view.GameUnoStage;
 import org.example.eiscuno.view.WelcomeGameUnoStage;
 
@@ -90,6 +92,7 @@ public class GameUnoController {
     private GameUno gameUno;
     private int posInitCardToShow;
     private boolean startGame;
+    private ITableImplementation tableImplementation;
 
     private ThreadPlayMachine threadPlayMachine;
 
@@ -142,6 +145,10 @@ public class GameUnoController {
         threadPlayMachine.printCardsMachinePlayer();
     }
 
+    /**
+     * Toggles the visibility of the color choice panel.
+     * Brings it to the front and shows or hides it.
+     */
     private void setVisibilityButtonsChooseColor() {
         pnBtnChooseColor.toFront();
         pnBtnChooseColor.setVisible(!pnBtnChooseColor.isVisible());
@@ -154,8 +161,9 @@ public class GameUnoController {
         this.humanPlayer = new Player("HUMAN_PLAYER");
         this.machinePlayer = new Player("MACHINE_PLAYER");
         Deck deck = new Deck();
-        this.table = new Table();
-        this.gameUno = new GameUno(this.humanPlayer, this.machinePlayer, deck, this.table);
+        this.tableImplementation = new TableImplementation();
+        this.table = new Table(tableImplementation);
+        this.gameUno = new GameUno(this.humanPlayer, this.machinePlayer, deck, this.table, this);
         this.posInitCardToShow = 0;
         this.startGame = true;
         cardEat.setVisible(false);
@@ -213,7 +221,6 @@ public class GameUnoController {
      * Determines if the selected card is valid
      */
     public void selectedCard(Card card) {
-        int cardsHumanPlayer = humanPlayer.getCardsPlayer().size();
         if (gameUno.isCardPlayable(card) && !threadPlayMachine.isHasPlayerPlayed()) {
             musicGame.playPutCardSound();
             gameUno.playCard(card);
@@ -222,17 +229,13 @@ public class GameUnoController {
             if (gameUno.isEspecialCard(card)) {
                 playEspecialCard(machinePlayer, card);
                 threadPlayMachine.printCardsMachinePlayer();
-                cardsHumanPlayer--;
-                if (cardsHumanPlayer == 0) {
-                    showResultAlert(true);
-                } else {
-                    return;
+                if(gameUno.isPlayerEmpty(humanPlayer)){
+                    gameUno.isGameOver(humanPlayer);
                 }
             } else {
-                cardsHumanPlayer--;
                 threadPlayMachine.setHasPlayerPlayed(true);
-                if (cardsHumanPlayer == 0) {
-                    showResultAlert(true);
+                if(gameUno.isPlayerEmpty(humanPlayer)){
+                    gameUno.isGameOver(humanPlayer);
                 }
             }
             printCardsHumanPlayer();
@@ -264,15 +267,8 @@ public class GameUnoController {
         switch (card.getType()) {
             case "FOUR_WILD" -> {
                 musicGame.playDrawFourSound();
-
-                if (gameUno.deck.isEmpty()){
-                    if (gameUno.getHumanPlayer().getCardsPlayer().size() < gameUno.getMachinePlayer().getCardsPlayer().size()) {
-                        showResultDeckAlert(Boolean.TRUE);
-                    } else if (gameUno.getHumanPlayer().getCardsPlayer().size() == gameUno.getMachinePlayer().getCardsPlayer().size()) {
-                        showResultDeckAlert(null);
-                    } else {
-                        showResultDeckAlert(Boolean.FALSE);
-                    }
+                if (gameUno.isDeckEmpty()){
+                    gameUno.isGameOver(humanPlayer);
                 } else {
                     setAnimationTakeCard(false, 4);
                     gameUno.eatCard(player, 4);
@@ -281,14 +277,8 @@ public class GameUnoController {
             }
             case "TWO_WILD" -> {
                 musicGame.playDrawTwoSound();
-                if (gameUno.deck.isEmpty()){
-                    if (gameUno.getHumanPlayer().getCardsPlayer().size() < gameUno.getMachinePlayer().getCardsPlayer().size()) {
-                        showResultDeckAlert(Boolean.TRUE);
-                    } else if (gameUno.getHumanPlayer().getCardsPlayer().size() == gameUno.getMachinePlayer().getCardsPlayer().size()) {
-                        showResultDeckAlert(null);
-                    } else {
-                        showResultDeckAlert(Boolean.FALSE);
-                    }
+                if (gameUno.isDeckEmpty()){
+                    gameUno.isGameOver(humanPlayer);
                 } else {
                     setAnimationTakeCard(false, 2);
                     gameUno.eatCard(player, 2);
@@ -417,6 +407,11 @@ public class GameUnoController {
      */
     @FXML
     void onHandleTakeCard(ActionEvent event) {
+        if(gameUno.isPlayerSingUno()){
+            gameUno.isGameOver(humanPlayer);
+            return;
+        }
+
         if (!threadPlayMachine.isHasPlayerPlayed()) {
             gameUno.eatCard(humanPlayer, 1);
             threadPlayMachine.setHasPlayerPlayed(true);
@@ -424,6 +419,12 @@ public class GameUnoController {
         }
     }
 
+    /**
+     * Animates the process of a player taking cards from the table.
+     *
+     * @param player A boolean indicating if it's the human player (true) or machine (false).
+     * @param numCards The number of cards the player takes in this animation.
+     */
     public void setAnimationTakeCard(boolean player, int numCards) {
         cardEat.setVisible(true);
         cardEat.setScaleX(1.0);
@@ -462,6 +463,12 @@ public class GameUnoController {
 
     }
 
+    /**
+     * Handles returning to the main menu from the game interface.
+     *
+     * @param event The action event triggered by clicking the return button.
+     * @throws IOException If an error occurs while loading the main menu.
+     */
     @FXML
     void onHandleReturnMenuGame(ActionEvent event) throws IOException {
         GameUnoStage.deleteInstance();
@@ -469,6 +476,12 @@ public class GameUnoController {
         mainMusicGame.stopSound();
     }
 
+    /**
+     * Displays an alert showing the game result.
+     * Shows victory or defeat with animations and sound effects.
+     *
+     * @param isWinner true if the player wins, false if the player loses.
+     */
     public void showResultAlert(boolean isWinner) {
         mainMusicGame.stopSound();
         if (isWinner) {
@@ -483,6 +496,12 @@ public class GameUnoController {
         }
     }
 
+    /**
+     * Displays an alert showing the game outcome based on the comparison of remaining cards.
+     * Handles three cases: a tie, a win, and a loss, each with animations and sound effects.
+     *
+     * @param isWinner null for a tie, true if the player wins, false if the player loses.
+     */
     public void showResultDeckAlert(Boolean isWinner) {
         mainMusicGame.stopSound();
         if (isWinner == null) {
@@ -503,7 +522,14 @@ public class GameUnoController {
         }
     }
 
-
+    /**
+     * Updates the visual style of the player's cards based on whose turn it is.
+     *
+     * Applies a white drop shadow effect for an active player's turn.
+     * Sets semi-transparent opacity and a default cursor style for an inactive player's turn.
+     *
+     * @param turnPlayer true if it's the player's turn, false otherwise.
+     */
     public void turnPlayerStyle(boolean turnPlayer) {
         String style = turnPlayer
                 ? "-fx-effect: dropshadow(gaussian, white, 8, 0, 0, 0)"
@@ -556,6 +582,11 @@ public class GameUnoController {
         ButtonEffects.applyDefaultEffect(takeCardButton, "/org/example/eiscuno/cards-uno/deck_of_cards.png");
     }
 
+    /**
+     * Disables the "Next Card" and "Back Card" buttons for 1.5 seconds to prevent rapid actions.
+     * After a delay of 1.5 seconds, re-enables these buttons automatically.
+     * This helps ensure proper animation or transitions are completed before interacting with the UI again.
+     */
     private void setDisableNextBackBtn() {
         btnNextCard.setDisable(true);
         btnBackCard.setDisable(true);

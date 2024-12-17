@@ -35,6 +35,12 @@ public class WelcomeGameUnoStage extends Stage {
         setScene(scene); // Sets the scene for the stage
         setResizable(false); // Disallows resizing of the stage
         show(); // Displays the stage
+
+        setOnCloseRequest(event -> {
+            System.out.println("La ventana se ha cerrado...");
+            // Lógica adicional: liberar recursos, confirmar salida, etc.
+            deleteInstance(); // Eliminar la instancia del Singleton
+        });
     }
 
     /**

@@ -1,6 +1,7 @@
 package org.example.eiscuno.model.factoryMethod;
 
 import org.example.eiscuno.model.card.Card;
+import org.example.eiscuno.model.unoenum.EISCUnoEnum;
 
 public class UnoCardFactory implements ICardFactory {
 
@@ -56,15 +57,15 @@ public class UnoCardFactory implements ICardFactory {
     }
 
     private String getCardType(String name){
-        if(name.startsWith("TWO_WILD")){
+        if(name.startsWith("TWO_WILD") || name.endsWith("TWO_WILD")){
             return "TWO_WILD";
-        } else if(name.startsWith("FOUR_WILD")){
+        } else if(name.startsWith("FOUR_WILD") || name.endsWith("FOUR_WILD")){
             return "FOUR_WILD";
-        } else if(name.startsWith("SKIP")){
+        } else if(name.startsWith("SKIP") || name.endsWith("SKIP")){
             return "SKIP";
-        } else if(name.startsWith("RESERVE")){
+        } else if(name.startsWith("RESERVE") || name.endsWith("RESERVE")){
             return "RESERVE";
-        } else if(name.startsWith("WILD")){
+        } else if(name.startsWith("WILD") || name.endsWith("WILD")){
             return "WILD";
         }else {
             return null;

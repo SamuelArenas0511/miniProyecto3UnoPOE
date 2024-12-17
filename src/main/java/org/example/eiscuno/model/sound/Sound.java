@@ -6,6 +6,17 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.io.File;
 
+/**
+ * The {@code Sound} class is responsible for managing audio playback,
+ * including functionalities such as controlling volume and handling audio clips.
+ * <p>
+ * This class provides methods to manipulate audio clips, such as lowering
+ * the volume or performing other audio-related operations. It makes use of
+ * {@code FloatControl} for volume adjustment.
+ *
+ * @author Samuel Arenas Valencia, Maria Juliana Saavedra, Juan Esteban Rodriguez
+ * @version 1.0
+ */
 public class Sound {
     /**
      * Clip object that holds the audio data for playing, stopping, and looping the sound.
@@ -62,6 +73,17 @@ public class Sound {
         }
     }
 
+
+    /**
+     * Reduces the audio volume by a specified decrement value.
+     * <p>
+     * This method decreases the current volume of the audio clip by 15.0 decibels
+     * using the {@code FloatControl} of the audio clip. The method checks if the
+     * audio clip is not null before attempting to adjust the volume.
+     *
+     * @param v Unused parameter. Intended for a future implementation or flexibility.
+     *          Currently, the decrement value is fixed at 15.0 decibels.
+     */
     public void lowerVolume(float v){
         if (clip != null) {
             FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -70,11 +92,4 @@ public class Sound {
         }
     }
 
-    public void upperVolume(){
-        if (clip != null) {
-            FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            float currentVolume = volumeControl.getValue();
-            volumeControl.setValue(currentVolume + 6.0f);
-        }
-    }
 }

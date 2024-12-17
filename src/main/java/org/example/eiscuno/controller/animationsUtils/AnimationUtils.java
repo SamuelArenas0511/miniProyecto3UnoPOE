@@ -12,8 +12,24 @@ import javafx.util.Duration;
 
 import java.util.Random;
 
+/**
+ * The `AnimationUtils` class provides a collection of static methods to create animations and effects
+ * for JavaFX UI components. This includes card animations, table effects, skip animations, reverse card effects,
+ * and confetti effects for celebratory interactions.
+ *
+ * @author Samuel Arenas Valencia, Maria Juliana Saavedra, Juan Esteban Rodriguez
+ * @version 1.0
+ */
 public class AnimationUtils {
 
+    /**
+     * Creates a sequential animation to simulate taking a card with movement, scaling, and resetting effects.
+     *
+     * @param card         The `Node` representing the card to be animated.
+     * @param isPlayer     Boolean indicating whether the card belongs to the player.
+     * @param numCards    Number of cards to animate.
+     * @param onFinishAction Runnable action to execute once the animation sequence is completed.
+     */
     public static SequentialTransition createTakeCardAnimation(Node card, boolean isPlayer, int numCards, Runnable onFinishAction) {
         SequentialTransition animation = new SequentialTransition();
 
@@ -34,6 +50,7 @@ public class AnimationUtils {
 
         return animation;
     }
+
 
     private static TranslateTransition createMoveTransition(Node card, boolean isPlayer) {
         TranslateTransition moveTransition = new TranslateTransition(Duration.seconds(0.5), card);
@@ -62,6 +79,12 @@ public class AnimationUtils {
         return resetTransition;
     }
 
+    /**
+     * Applies a visual drop shadow effect to an `ImageView` table component based on the specified color.
+     *
+     * @param table The `ImageView` representing the table component.
+     * @param color The color for the shadow effect (e.g., "BLUE", "RED").
+     */
     public static void applyTableEffect(ImageView table, String color) {
         switch (color.toUpperCase()) {
             case "BLUE" -> table.setStyle("-fx-effect: dropshadow(gaussian, blue, 20, 0, 0, 0)");
@@ -72,6 +95,14 @@ public class AnimationUtils {
         }
     }
 
+    /**
+     * Sets the deal animation for a card, adding it to the grid with a delay effect based on its index.
+     *
+     * @param index          The position index for dealing the card.
+     * @param cardImageView  The `ImageView` representing the card to animate.
+     * @param gridPane       The `GridPane` where the card will be placed.
+     * @param onAnimationComplete Runnable action to execute after the deal animation.
+     */
     public static void setDealAnimation(int index, ImageView cardImageView, GridPane gridPane, Runnable onAnimationComplete) {
         PauseTransition delay = new PauseTransition(Duration.seconds(0.2 * index));
         delay.setOnFinished(event -> {
@@ -95,6 +126,12 @@ public class AnimationUtils {
         });
         scaleTransition.play();
     }
+
+    /**
+     * Creates a skip card animation, including fade, scale, and a glowing drop shadow effect.
+     *
+     * @param skipCardImageView The `ImageView` representing the skip card to animate.
+     */
 
     public static void animateSkipCard(ImageView skipCardImageView) {
         skipCardImageView.setOpacity(0);
@@ -137,6 +174,12 @@ public class AnimationUtils {
         animation.play();
     }
 
+    /**
+     * Creates an animation for a reverse card, including rotation, scaling, and fading effects.
+     *
+     * @param reverseCardImageView The `ImageView` representing the reverse card.
+     */
+
     public static void animateReverseCard(ImageView reverseCardImageView) {
         System.out.println("animacion de reverse ");
         reverseCardImageView.setOpacity(100);
@@ -176,6 +219,11 @@ public class AnimationUtils {
         animation.play();
     }
 
+    /**
+     * Creates a special animation for an UNO card, including fade, scaling, and drop shadow effects.
+     *
+     * @param unoImageView The `ImageView` representing the UNO card to animate.
+     */
     public static void unoAnimation(ImageView unoImageView){
         unoImageView.setOpacity(0);
 
@@ -217,6 +265,13 @@ public class AnimationUtils {
         animation.play();
     }
 
+    /**
+     * Creates a confetti effect by generating multiple rectangles that fall randomly across the screen.
+     *
+     * @param pane  The `Pane` where the confetti effect will be displayed.
+     * @param startX X-coordinate representing the starting position.
+     * @param startY Y-coordinate representing the starting position.
+     */
     public static void createConfetti(Pane pane, double startX, double startY) {
         Random random = new Random();
 

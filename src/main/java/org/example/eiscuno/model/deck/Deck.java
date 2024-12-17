@@ -1,5 +1,8 @@
 package org.example.eiscuno.model.deck;
 
+import org.example.eiscuno.model.exception.emptyDeckException;
+import org.example.eiscuno.model.factoryMethod.ICardFactory;
+import org.example.eiscuno.model.factoryMethod.UnoCardFactory;
 import org.example.eiscuno.model.unoenum.EISCUnoEnum;
 import org.example.eiscuno.model.card.Card;
 
@@ -10,12 +13,14 @@ import java.util.Stack;
  * Represents a deck of Uno cards.
  */
 public class Deck {
-    private Stack<Card> deckOfCards;
+    public Stack<Card> deckOfCards;
+    private ICardFactory cardFactory;
 
     /**
      * Constructs a new deck of Uno cards and initializes it.
      */
     public Deck() {
+        this.cardFactory = new UnoCardFactory();
         deckOfCards = new Stack<>();
         initializeDeck();
     }
@@ -34,52 +39,11 @@ public class Deck {
                     cardEnum.name().startsWith("TWO_WILD_DRAW_") ||
                     cardEnum.name().equals("FOUR_WILD_DRAW") ||
                     cardEnum.name().equals("WILD")) {
-                Card card = new Card(cardEnum.getFilePath(), getCardValue(cardEnum.name()), getCardColor(cardEnum.name()));
+                Card card = cardFactory.createCard(cardEnum.getFilePath(), cardEnum.name());
                 deckOfCards.push(card);
             }
         }
         Collections.shuffle(deckOfCards);
-    }
-
-    private String getCardValue(String name) {
-        if (name.endsWith("0")){
-            return "0";
-        } else if (name.endsWith("1")){
-            return "1";
-        } else if (name.endsWith("2")){
-            return "2";
-        } else if (name.endsWith("3")){
-            return "3";
-        } else if (name.endsWith("4")){
-            return "4";
-        } else if (name.endsWith("5")){
-            return "5";
-        } else if (name.endsWith("6")){
-            return "6";
-        } else if (name.endsWith("7")){
-            return "7";
-        } else if (name.endsWith("8")){
-            return "8";
-        } else if (name.endsWith("9")){
-            return "9";
-        } else {
-            return null;
-        }
-
-    }
-
-    private String getCardColor(String name){
-        if(name.startsWith("GREEN")){
-            return "GREEN";
-        } else if(name.startsWith("YELLOW")){
-            return "YELLOW";
-        } else if(name.startsWith("BLUE")){
-            return "BLUE";
-        } else if(name.startsWith("RED")){
-            return "RED";
-        } else {
-            return null;
-        }
     }
 
     /**
@@ -89,10 +53,15 @@ public class Deck {
      * @throws IllegalStateException if the deck is empty
      */
     public Card takeCard() {
-        if (deckOfCards.isEmpty()) {
-            throw new IllegalStateException("No hay más cartas en el mazo.");
+        try{
+            if (deckOfCards.isEmpty()) {
+                throw new emptyDeckException("No hay más cartas en el mazo.");
+            }
+            return deckOfCards.pop();
+        }catch (emptyDeckException e) {
+            System.out.println(e.getMessage());
         }
-        return deckOfCards.pop();
+        return null;
     }
 
     /**

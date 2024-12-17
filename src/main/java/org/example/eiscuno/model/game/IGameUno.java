@@ -28,6 +28,8 @@ public interface IGameUno {
      */
     void playCard(Card card);
 
+    boolean isEspecialCard(Card card);
+
     /**
      * Handles the action when a player shouts "Uno".
      *
@@ -48,5 +50,7 @@ public interface IGameUno {
      *
      * @return true if the game is over, false otherwise
      */
-    Boolean isGameOver();
+    void isGameOver(Player player);
+    Player getHumanPlayer();
+    Player getMachinePlayer();
 }

@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+.starGameButton:hover{
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, #ffffff, 10, 0, 0, 0);
+}
+
+.labelContinue{
+    -fx-font-family: Montserrat;
+    -fx-font-weight: bold;
+}

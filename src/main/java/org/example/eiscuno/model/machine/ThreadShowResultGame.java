@@ -72,6 +72,7 @@ public class ThreadShowResultGame extends Thread{
 
     public void stopThread() {
         running = false;
+
     }
 
 }

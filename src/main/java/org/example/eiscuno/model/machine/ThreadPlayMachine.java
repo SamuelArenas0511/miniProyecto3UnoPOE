@@ -190,6 +190,7 @@ public class ThreadPlayMachine extends Thread {
 
     public void stopThread() {
         running = false;
+        hasPlayerPlayed=false;
     }
 
 }

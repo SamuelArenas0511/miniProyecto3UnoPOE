@@ -39,8 +39,7 @@ public class ThreadSingUNOMachine implements Runnable{
             if ((cardsPlayer == 1) || (cardsMachine == 1)) {
                 System.out.println("Se llegó a la condición de una sola carta.");
                 try {
-                    long sleepTime = 2000 + (long) (Math.random() * 2000);
-                    Thread.sleep(sleepTime);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

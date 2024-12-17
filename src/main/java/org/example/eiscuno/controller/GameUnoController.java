@@ -30,6 +30,8 @@ import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.sound.Sound;
 import org.example.eiscuno.model.sound.music.MusicGame;
 import org.example.eiscuno.model.table.Table;
+import org.example.eiscuno.model.table.bridge.ITableImplementation;
+import org.example.eiscuno.model.table.bridge.TableImplementation;
 import org.example.eiscuno.view.GameUnoStage;
 import org.example.eiscuno.view.WelcomeGameUnoStage;
 
@@ -90,6 +92,7 @@ public class GameUnoController {
     private GameUno gameUno;
     private int posInitCardToShow;
     private boolean startGame;
+    private ITableImplementation tableImplementation;
 
     private ThreadPlayMachine threadPlayMachine;
 
@@ -158,7 +161,8 @@ public class GameUnoController {
         this.humanPlayer = new Player("HUMAN_PLAYER");
         this.machinePlayer = new Player("MACHINE_PLAYER");
         Deck deck = new Deck();
-        this.table = new Table();
+        this.tableImplementation = new TableImplementation();
+        this.table = new Table(tableImplementation);
         this.gameUno = new GameUno(this.humanPlayer, this.machinePlayer, deck, this.table, this);
         this.posInitCardToShow = 0;
         this.startGame = true;
@@ -217,7 +221,6 @@ public class GameUnoController {
      * Determines if the selected card is valid
      */
     public void selectedCard(Card card) {
-        int cardsHumanPlayer = humanPlayer.getCardsPlayer().size();
         if (gameUno.isCardPlayable(card) && !threadPlayMachine.isHasPlayerPlayed()) {
             musicGame.playPutCardSound();
             gameUno.playCard(card);
@@ -226,17 +229,13 @@ public class GameUnoController {
             if (gameUno.isEspecialCard(card)) {
                 playEspecialCard(machinePlayer, card);
                 threadPlayMachine.printCardsMachinePlayer();
-                cardsHumanPlayer--;
-                if (cardsHumanPlayer == 0) {
-                    showResultAlert(true);
-                } else {
-                    return;
+                if(gameUno.isPlayerEmpty(humanPlayer)){
+                    gameUno.isGameOver(humanPlayer);
                 }
             } else {
-                cardsHumanPlayer--;
                 threadPlayMachine.setHasPlayerPlayed(true);
-                if (cardsHumanPlayer == 0) {
-                    showResultAlert(true);
+                if(gameUno.isPlayerEmpty(humanPlayer)){
+                    gameUno.isGameOver(humanPlayer);
                 }
             }
             printCardsHumanPlayer();
@@ -268,15 +267,8 @@ public class GameUnoController {
         switch (card.getType()) {
             case "FOUR_WILD" -> {
                 musicGame.playDrawFourSound();
-
-                if (gameUno.deck.isEmpty()){
-                    if (gameUno.getHumanPlayer().getCardsPlayer().size() < gameUno.getMachinePlayer().getCardsPlayer().size()) {
-                        showResultDeckAlert(Boolean.TRUE);
-                    } else if (gameUno.getHumanPlayer().getCardsPlayer().size() == gameUno.getMachinePlayer().getCardsPlayer().size()) {
-                        showResultDeckAlert(null);
-                    } else {
-                        showResultDeckAlert(Boolean.FALSE);
-                    }
+                if (gameUno.isDeckEmpty()){
+                    gameUno.isGameOver(humanPlayer);
                 } else {
                     setAnimationTakeCard(false, 4);
                     gameUno.eatCard(player, 4);
@@ -285,14 +277,8 @@ public class GameUnoController {
             }
             case "TWO_WILD" -> {
                 musicGame.playDrawTwoSound();
-                if (gameUno.deck.isEmpty()){
-                    if (gameUno.getHumanPlayer().getCardsPlayer().size() < gameUno.getMachinePlayer().getCardsPlayer().size()) {
-                        showResultDeckAlert(Boolean.TRUE);
-                    } else if (gameUno.getHumanPlayer().getCardsPlayer().size() == gameUno.getMachinePlayer().getCardsPlayer().size()) {
-                        showResultDeckAlert(null);
-                    } else {
-                        showResultDeckAlert(Boolean.FALSE);
-                    }
+                if (gameUno.isDeckEmpty()){
+                    gameUno.isGameOver(humanPlayer);
                 } else {
                     setAnimationTakeCard(false, 2);
                     gameUno.eatCard(player, 2);
@@ -421,6 +407,11 @@ public class GameUnoController {
      */
     @FXML
     void onHandleTakeCard(ActionEvent event) {
+        if(gameUno.isPlayerSingUno()){
+            gameUno.isGameOver(humanPlayer);
+            return;
+        }
+
         if (!threadPlayMachine.isHasPlayerPlayed()) {
             gameUno.eatCard(humanPlayer, 1);
             threadPlayMachine.setHasPlayerPlayed(true);

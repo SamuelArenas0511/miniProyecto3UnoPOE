@@ -8,6 +8,8 @@ import org.example.eiscuno.model.deck.Deck;
 import org.example.eiscuno.model.machine.ThreadPlayMachine;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
+import org.example.eiscuno.model.table.bridge.ITableImplementation;
+import org.example.eiscuno.model.table.bridge.TableImplementation;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,13 +36,15 @@ class GameUnoTest {
     private Card testCard;
     private Card testCard2;
     private GameUno gameUno;
+    private ITableImplementation tableImplementation;
 
 
     @BeforeEach
     void setUp() {
         this.testHumanPlayer = new Player("HUMAN_PLAYER");
         this.testMachinePlayer = new Player("MACHINE_PLAYER");
-        this.testTable = new Table();
+        this.tableImplementation = new TableImplementation();
+        this.testTable = new Table(tableImplementation);
         this.testCard = new Card("5", "RED", null); // carta puesta en la mesa
         this.testCard2 = new Card("2", "RED", null); // carta que si puede jugar el jugador
         this.gameUno = new GameUno(testHumanPlayer,testMachinePlayer,testTable);

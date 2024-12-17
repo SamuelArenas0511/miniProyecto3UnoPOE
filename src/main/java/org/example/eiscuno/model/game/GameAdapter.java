@@ -3,7 +3,7 @@ package org.example.eiscuno.model.game;
 import org.example.eiscuno.model.card.Card;
 import org.example.eiscuno.model.player.Player;
 
-public class GameAdapter implements IGameUno{
+public abstract class GameAdapter implements IGameUno{
     @Override
     public void startGame() {
 
@@ -35,8 +35,7 @@ public class GameAdapter implements IGameUno{
     }
 
     @Override
-    public Boolean isGameOver(Player player) {
-        return null;
+    public void isGameOver(Player player) {
     }
 
     @Override

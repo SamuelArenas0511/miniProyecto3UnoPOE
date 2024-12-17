@@ -291,4 +291,12 @@ public class GameUno extends GameAdapter {
     public Player getMachinePlayer(){
         return machinePlayer;
     }
+
+    public Boolean isDeckEmpty(){
+        return deck.isEmpty();
+    }
+
+    public Boolean isPlayerEmpty(Player player){
+        return player.getCardsPlayer().isEmpty();
+    }
 }

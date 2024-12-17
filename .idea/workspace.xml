@@ -5,17 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/org/example/eiscuno/sounds/sounds-game/lose_game_sound.WAV" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/org/example/eiscuno/sounds/sounds-game/win_game_sound.WAV" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/table/bridge/ITableImplementation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/table/bridge/TableImplementation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/Card.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/factoryMethod/UnoCardFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/factoryMethod/UnoCardFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/game/GameAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/game/GameAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/game/GameUno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/game/GameUno.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadShowResultGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadShowResultGame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/sound/music/IMusic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/sound/music/IMusic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/sound/music/MusicGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/sound/music/MusicGame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/eiscuno/game-uno-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/eiscuno/game-uno-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/table/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/table/Table.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/eiscuno/model/card/CardTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/eiscuno/model/card/CardTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/example/eiscuno/model/game/GameUnoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/eiscuno/model/game/GameUnoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/eiscuno/model/table/TableTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/eiscuno/model/table/TableTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,8 +30,8 @@
         <option value="Enum" />
         <option value="CSS File" />
         <option value="JUnit5 Test Class" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -79,6 +80,7 @@
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.HelloApplication.executor": "Run",
     "Application.Main.executor": "Run",
+    "JUnit.CardTest.testGetters.executor": "Run",
     "JUnit.GameUnoTest.testCardHasBeenPlayed.executor": "Run",
     "JUnit.GameUnoTest.testGameResultsHumanPlayerWins.executor": "Run",
     "JUnit.GameUnoTest.testIsCardPlayable.executor": "Run",
@@ -136,6 +138,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="CardTest.testGetters" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="eisc-uno" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.eiscuno.model.card.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.eiscuno.model.card" />
+      <option name="MAIN_CLASS_NAME" value="org.example.eiscuno.model.card.CardTest" />
+      <option name="METHOD_NAME" value="testGetters" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="GameUnoTest.testCardHasBeenPlayed" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="eisc-uno" />
       <extension name="coverage">
@@ -168,33 +186,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GameUnoTest.testIsCardPlayable_WildCard" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TableTest.testGetCurrentCardWhenTableIsEmpty" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="eisc-uno" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.eiscuno.model.game.*" />
+          <option name="PATTERN" value="org.example.eiscuno.model.table.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="org.example.eiscuno.model.game" />
-      <option name="MAIN_CLASS_NAME" value="org.example.eiscuno.model.game.GameUnoTest" />
-      <option name="METHOD_NAME" value="testIsCardPlayable_WildCard" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="GameUnoTest.testIsNotCardPlayable" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="eisc-uno" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.eiscuno.model.game.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.example.eiscuno.model.game" />
-      <option name="MAIN_CLASS_NAME" value="org.example.eiscuno.model.game.GameUnoTest" />
-      <option name="METHOD_NAME" value="testIsNotCardPlayable" />
+      <option name="PACKAGE_NAME" value="org.example.eiscuno.model.table" />
+      <option name="MAIN_CLASS_NAME" value="org.example.eiscuno.model.table.TableTest" />
+      <option name="METHOD_NAME" value="testGetCurrentCardWhenTableIsEmpty" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -202,18 +204,18 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
+      <item itemvalue="JUnit.CardTest.testGetters" />
+      <item itemvalue="JUnit.TableTest.testGetCurrentCardWhenTableIsEmpty" />
       <item itemvalue="JUnit.GameUnoTest.testCardHasBeenPlayed" />
       <item itemvalue="JUnit.GameUnoTest.testIsCardPlayable" />
-      <item itemvalue="JUnit.GameUnoTest.testIsCardPlayable_WildCard" />
-      <item itemvalue="JUnit.GameUnoTest.testIsNotCardPlayable" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.GameUnoTest.testIsCardPlayable" />
+        <item itemvalue="JUnit.TableTest.testGetCurrentCardWhenTableIsEmpty" />
         <item itemvalue="JUnit.GameUnoTest.testCardHasBeenPlayed" />
-        <item itemvalue="JUnit.GameUnoTest.testIsNotCardPlayable" />
-        <item itemvalue="JUnit.GameUnoTest.testIsCardPlayable_WildCard" />
+        <item itemvalue="JUnit.GameUnoTest.testIsCardPlayable" />
+        <item itemvalue="JUnit.CardTest.testGetters" />
       </list>
     </recent_temporary>
   </component>

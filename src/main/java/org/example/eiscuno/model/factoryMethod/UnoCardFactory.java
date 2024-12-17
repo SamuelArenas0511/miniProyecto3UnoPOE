@@ -3,7 +3,7 @@ package org.example.eiscuno.model.factoryMethod;
 import org.example.eiscuno.model.card.Card;
 import org.example.eiscuno.model.unoenum.EISCUnoEnum;
 
-public class UnoCardFactory implements CardFactory {
+public class UnoCardFactory implements ICardFactory {
 
     @Override
     public Card createCard(String url, String name) {

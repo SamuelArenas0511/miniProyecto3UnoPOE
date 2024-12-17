@@ -10,10 +10,7 @@ import org.example.eiscuno.controller.GameUnoController;
 import org.example.eiscuno.model.card.Card;
 import org.example.eiscuno.model.command.Command;
 import org.example.eiscuno.model.command.InvokerCommand;
-import org.example.eiscuno.model.command.specific_commads.SetAnimationTakeCard;
-import org.example.eiscuno.model.command.specific_commads.SetStyleTurnPlayer;
-import org.example.eiscuno.model.command.specific_commads.ShowResult;
-import org.example.eiscuno.model.command.specific_commads.UpdateCardsHumanPlayer;
+import org.example.eiscuno.model.command.specific_commads.*;
 import org.example.eiscuno.model.game.GameUno;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.sound.music.MusicGame;
@@ -61,6 +58,8 @@ public class ThreadPlayMachine extends Thread {
     public void putCardOnTheTable() throws InterruptedException {
         Card card = null;
         int counter = 0;
+        int cardsHumanPlayer = humanPlayer.getCardsPlayer().size();
+        int cardsMachinePlayer = machinePlayer.getCardsPlayer().size();
         for (Card iter : machinePlayer.getCardsPlayer()) {
             if (gameUno.isCardPlayable(iter)) {
                 card = iter;
@@ -68,13 +67,24 @@ public class ThreadPlayMachine extends Thread {
             }
             counter++;
         }
-        if (card == null) {
+        if (card == null && !gameUno.deck.isEmpty()) {
             musicGame.playDrawCardSound();
             System.out.println("La maquina comio carta");
             gameUno.eatCard(machinePlayer, 1);
             hasPlayerPlayed = false;
             Platform.runLater(() -> new InvokerCommand(new SetStyleTurnPlayer(gameUnoController,true)).invoke());
             Platform.runLater(() -> new InvokerCommand(new SetAnimationTakeCard(gameUnoController,false,1)).invoke());
+        } else if (card == null && gameUno.deck.isEmpty()) {
+            if (cardsHumanPlayer < cardsMachinePlayer) {
+                Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, Boolean.TRUE)).invoke());
+                stopThread();
+            } else if (cardsHumanPlayer == cardsMachinePlayer) {
+                Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, null)).invoke());
+                stopThread();
+            } else {
+                Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, Boolean.FALSE)).invoke());
+                stopThread();
+            }
         } else {
             machinePlayer.removeCard(counter);
             gameUno.playCard(card);
@@ -86,9 +96,22 @@ public class ThreadPlayMachine extends Thread {
                 playEspecialCard(humanPlayer, card);
                 Platform.runLater(() -> new InvokerCommand(new UpdateCardsHumanPlayer(gameUnoController)).invoke());
                 hasPlayerPlayed = true;
+                cardsMachinePlayer--;
+                if (cardsMachinePlayer == 0) {
+                    stopThread();
+                    Platform.runLater(() -> new InvokerCommand(new ShowResult(gameUnoController,false)).invoke());
+                    stopThread();
+                }
             }else{
-                Platform.runLater(() -> new InvokerCommand(new SetStyleTurnPlayer(gameUnoController,true)).invoke());
-                hasPlayerPlayed = false;
+                cardsMachinePlayer--;
+                if (cardsMachinePlayer == 0) {
+                    stopThread();
+                    Platform.runLater(() -> new InvokerCommand(new ShowResult(gameUnoController,false)).invoke());
+                    stopThread();
+                } else {
+                    Platform.runLater(() -> new InvokerCommand(new SetStyleTurnPlayer(gameUnoController, true)).invoke());
+                    hasPlayerPlayed = false;
+                }
             }
         }
     }

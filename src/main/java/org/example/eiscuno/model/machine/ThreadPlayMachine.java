@@ -88,14 +88,6 @@ public class ThreadPlayMachine extends Thread {
         }
     }
 
-    /**
-     * Handles the logic for the machine to place a card on the table.
-     * <p>
-     * The method checks for playable cards, processes special cards, and updates
-     * the game state accordingly. If no card is playable, the machine draws a card.
-     *
-     * @throws InterruptedException If the thread sleep is interrupted.
-     */
     public void putCardOnTheTable() throws InterruptedException {
         Card card = null;
         int counter = 0;
@@ -113,67 +105,49 @@ public class ThreadPlayMachine extends Thread {
             System.out.println("La maquina comio carta");
             gameUno.eatCard(machinePlayer, 1);
             hasPlayerPlayed = false;
-            Platform.runLater(() -> new InvokerCommand(new SetStyleTurnPlayer(gameUnoController, true)).invoke());
-            Platform.runLater(() -> new InvokerCommand(new SetAnimationTakeCard(gameUnoController, false, 1)).invoke());
+            Platform.runLater(() -> new InvokerCommand(new SetStyleTurnPlayer(gameUnoController,true)).invoke());
+            Platform.runLater(() -> new InvokerCommand(new SetAnimationTakeCard(gameUnoController,false,1)).invoke());
         } else if (card == null && gameUno.deck.isEmpty()) {
-            determineWinner(cardsHumanPlayer, cardsMachinePlayer);
+            if (cardsHumanPlayer < cardsMachinePlayer) {
+                Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, Boolean.TRUE)).invoke());
+                stopThread();
+            } else if (cardsHumanPlayer == cardsMachinePlayer) {
+                Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, null)).invoke());
+                stopThread();
+            } else {
+                Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, Boolean.FALSE)).invoke());
+                stopThread();
+            }
         } else {
-            processCardPlay(card, counter, cardsMachinePlayer);
+            machinePlayer.removeCard(counter);
+            gameUno.playCard(card);
+            tableImageView.setImage(card.getImage());
+            Platform.runLater(this::printCardsMachinePlayer);
+
+            if(gameUno.isEspecialCard(card)){
+                Thread.sleep(1000);
+                playEspecialCard(humanPlayer, card);
+                Platform.runLater(() -> new InvokerCommand(new UpdateCardsHumanPlayer(gameUnoController)).invoke());
+                hasPlayerPlayed = true;
+                cardsMachinePlayer--;
+                if (cardsMachinePlayer == 0) {
+                    stopThread();
+                    Platform.runLater(() -> new InvokerCommand(new ShowResult(gameUnoController,false)).invoke());
+                    stopThread();
+                }
+            }else{
+                cardsMachinePlayer--;
+                if (cardsMachinePlayer == 0) {
+                    stopThread();
+                    Platform.runLater(() -> new InvokerCommand(new ShowResult(gameUnoController,false)).invoke());
+                    stopThread();
+                } else {
+                    Platform.runLater(() -> new InvokerCommand(new SetStyleTurnPlayer(gameUnoController, true)).invoke());
+                    hasPlayerPlayed = false;
+                }
+            }
         }
     }
-
-    /**
-     * Determines the winner of the game if the deck is empty and no playable card exists.
-     *
-     * @param cardsHumanPlayer  The number of cards the human player holds.
-     * @param cardsMachinePlayer The number of cards the machine player holds.
-     */
-    private void determineWinner(int cardsHumanPlayer, int cardsMachinePlayer) {
-        if (cardsHumanPlayer < cardsMachinePlayer) {
-            Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, Boolean.TRUE)).invoke());
-            stopThread();
-        } else if (cardsHumanPlayer == cardsMachinePlayer) {
-            Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, null)).invoke());
-            stopThread();
-        } else {
-            Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, Boolean.FALSE)).invoke());
-            stopThread();
-        }
-    }
-
-    /**
-     * Processes the playable card, updating the game state, animations, and results.
-     *
-     * @param card               The card played by the machine.
-     * @param counter            The index of the card in the machine's hand.
-     * @param cardsMachinePlayer The current number of cards the machine player holds.
-     * @throws InterruptedException If the thread sleep is interrupted.
-     */
-    private void processCardPlay(Card card, int counter, int cardsMachinePlayer) throws InterruptedException {
-        machinePlayer.removeCard(counter);
-        gameUno.playCard(card);
-        tableImageView.setImage(card.getImage());
-        Platform.runLater(this::printCardsMachinePlayer);
-
-        if (gameUno.isEspecialCard(card)) {
-            Thread.sleep(1000);
-            playEspecialCard(humanPlayer, card);
-            Platform.runLater(() -> new InvokerCommand(new UpdateCardsHumanPlayer(gameUnoController)).invoke());
-        }
-        cardsMachinePlayer--;
-        if (cardsMachinePlayer == 0) {
-            stopThread();
-            Platform.runLater(() -> new InvokerCommand(new ShowResult(gameUnoController, false)).invoke());
-        }
-    }
-
-    /**
-     * Plays the special card and executes its effects, such as Draw Four or Skip.
-     *
-     * @param player The player affected by the special card.
-     * @param card   The special card being played.
-     * @throws InterruptedException If the thread sleep is interrupted.
-     */
 
     public void playEspecialCard(Player player, Card card) throws InterruptedException {
         switch (card.getType()) {
@@ -200,14 +174,6 @@ public class ThreadPlayMachine extends Thread {
         }
     }
 
-    /**
-     * Generates a random color for the machine player and updates the UI and game state.
-     * <p>
-     * This method selects a random color (BLUE, RED, YELLOW, GREEN), updates the table's
-     * visual effects with a drop shadow corresponding to the selected color, plays the
-     * relevant sound effect, and updates the game's state by calling {@code gameUno.setColorChoose}.
-     */
-
     private void getRandomColor() {
         String[] colors = {"BLUE", "RED", "YELLOW", "GREEN"};
         Random random = new Random();
@@ -222,15 +188,6 @@ public class ThreadPlayMachine extends Thread {
         System.out.println("la maquina acaba de escoger el color: "+ color);
         gameUno.setColorChoose(color);
     }
-
-    /**
-     * Plays a sound corresponding to the specified color.
-     * <p>
-     * This method maps a given color to its associated sound effect, ensuring that
-     * the selected color's auditory feedback is played.
-     *
-     * @param color A string representing the color ("BLUE", "RED", "YELLOW", "GREEN").
-     */
 
     private void playSoundColor(String color) {
         switch (color) {
@@ -277,28 +234,15 @@ public class ThreadPlayMachine extends Thread {
         scaleTransition.play();
     }
 
-    /**
-     * Sets whether the machine player has taken their turn in the game.
-     *
-     * @param hasPlayerPlayed A boolean value indicating if the machine player has played.
-     */
+
     public void setHasPlayerPlayed(boolean hasPlayerPlayed) {
         this.hasPlayerPlayed = hasPlayerPlayed;
     }
 
-    /**
-     * Checks whether the machine player has taken their turn in the game.
-     *
-     * @return A boolean indicating if the machine player has already made their move.
-     */
     public boolean isHasPlayerPlayed(){
         return this.hasPlayerPlayed;
     }
 
-
-    /**
-     * Stops the thread execution and resets relevant flags.
-     */
     public void stopThread() {
         running = false;
         hasPlayerPlayed=false;

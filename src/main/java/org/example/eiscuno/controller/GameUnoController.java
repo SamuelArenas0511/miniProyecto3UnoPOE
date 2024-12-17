@@ -1,6 +1,7 @@
 package org.example.eiscuno.controller;
 
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -16,11 +17,13 @@ import javafx.util.Duration;
 import org.example.eiscuno.controller.ButtonsHoverEffects.ButtonEffects;
 import org.example.eiscuno.controller.animationsUtils.AnimationUtils;
 import org.example.eiscuno.model.card.Card;
+
+import org.example.eiscuno.model.command.InvokerCommand;
+import org.example.eiscuno.model.command.specific_commads.ShowResult;
 import org.example.eiscuno.model.command.specific_commads.ShowResultDeck;
 import org.example.eiscuno.model.deck.Deck;
 import org.example.eiscuno.model.game.GameUno;
 import org.example.eiscuno.model.machine.ThreadPlayMachine;
-import org.example.eiscuno.model.machine.ThreadShowResultGame;
 import org.example.eiscuno.model.machine.ThreadSingUNOMachine;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.sound.Sound;
@@ -136,9 +139,6 @@ public class GameUnoController {
         threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.humanPlayer, this.tableImageView, this.gameUno, this.gridPaneCardsMachine, this);
         threadPlayMachine.start();
         threadPlayMachine.printCardsMachinePlayer();
-        ThreadShowResultGame threadShowResultGame = new ThreadShowResultGame(this.gridPaneCardsMachine, this.gridPaneCardsPlayer, this, threadPlayMachine, this.gameUno);
-        Thread threadShowResult = new Thread(threadShowResultGame, "ThreadShowResult");
-        threadShowResult.start();
     }
 
     private void setVisibilityButtonsChooseColor() {
@@ -212,6 +212,7 @@ public class GameUnoController {
      * Determines if the selected card is valid
      */
     public void selectedCard(Card card) {
+        int cardsHumanPlayer = humanPlayer.getCardsPlayer().size();
         if (gameUno.isCardPlayable(card) && !threadPlayMachine.isHasPlayerPlayed()) {
             musicGame.playPutCardSound();
             gameUno.playCard(card);
@@ -220,9 +221,18 @@ public class GameUnoController {
             if (gameUno.isEspecialCard(card)) {
                 playEspecialCard(machinePlayer, card);
                 threadPlayMachine.printCardsMachinePlayer();
-                return;
+                cardsHumanPlayer--;
+                if (cardsHumanPlayer == 0) {
+                    showResultAlert(true);
+                } else {
+                    return;
+                }
             } else {
+                cardsHumanPlayer--;
                 threadPlayMachine.setHasPlayerPlayed(true);
+                if (cardsHumanPlayer == 0) {
+                    showResultAlert(true);
+                }
             }
             printCardsHumanPlayer();
             turnPlayerStyle(false);
@@ -253,14 +263,35 @@ public class GameUnoController {
         switch (card.getType()) {
             case "FOUR_WILD" -> {
                 musicGame.playDrawFourSound();
-                setAnimationTakeCard(false, 4);
-                gameUno.eatCard(player, 4);
-                setVisibilityButtonsChooseColor();
+
+                if (gameUno.deck.isEmpty()){
+                    if (gameUno.getHumanPlayer().getCardsPlayer().size() < gameUno.getMachinePlayer().getCardsPlayer().size()) {
+                        showResultDeckAlert(Boolean.TRUE);
+                    } else if (gameUno.getHumanPlayer().getCardsPlayer().size() == gameUno.getMachinePlayer().getCardsPlayer().size()) {
+                        showResultDeckAlert(null);
+                    } else {
+                        showResultDeckAlert(Boolean.FALSE);
+                    }
+                } else {
+                    setAnimationTakeCard(false, 4);
+                    gameUno.eatCard(player, 4);
+                    setVisibilityButtonsChooseColor();
+                }
             }
             case "TWO_WILD" -> {
                 musicGame.playDrawTwoSound();
-                setAnimationTakeCard(false, 2);
-                gameUno.eatCard(player, 2);
+                if (gameUno.deck.isEmpty()){
+                    if (gameUno.getHumanPlayer().getCardsPlayer().size() < gameUno.getMachinePlayer().getCardsPlayer().size()) {
+                        showResultDeckAlert(Boolean.TRUE);
+                    } else if (gameUno.getHumanPlayer().getCardsPlayer().size() == gameUno.getMachinePlayer().getCardsPlayer().size()) {
+                        showResultDeckAlert(null);
+                    } else {
+                        showResultDeckAlert(Boolean.FALSE);
+                    }
+                } else {
+                    setAnimationTakeCard(false, 2);
+                    gameUno.eatCard(player, 2);
+                }
             }
             case "WILD" -> {setVisibilityButtonsChooseColor();
                 musicGame.playWildCardSound();

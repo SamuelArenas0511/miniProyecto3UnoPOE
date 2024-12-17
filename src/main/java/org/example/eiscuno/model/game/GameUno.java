@@ -169,8 +169,13 @@ public class GameUno implements IGameUno {
      *
      * @return True if the deck is empty, indicating the game is over; otherwise, false.
      */
-    @Override
-    public Boolean isGameOver() {
+    //@Override
+    public Boolean isGameOver(Player player) {
+        if(player.getCardsPlayer().isEmpty()){
+            System.out.println("Gamefinish playing");
+        } else if (deck.isEmpty()) {
+            System.out.println("Gamefinish deck");
+        }
         return null;
     }
 
@@ -219,5 +224,14 @@ public class GameUno implements IGameUno {
 
     public void setMachineSingUno(boolean machineSingUno) {
         this.machineSingUno = machineSingUno;
+    }
+
+    @Override
+    public Player getHumanPlayer() {
+        return humanPlayer;
+    }
+
+    public Player getMachinePlayer(){
+        return machinePlayer;
     }
 }

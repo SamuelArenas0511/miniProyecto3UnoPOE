@@ -63,4 +63,5 @@ public class Player implements IPlayer {
     public String getTypePlayer() {
         return typePlayer;
     }
+
 }

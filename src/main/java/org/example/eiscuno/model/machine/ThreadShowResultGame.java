@@ -29,13 +29,11 @@ public class ThreadShowResultGame extends Thread{
     public void run() {
         while (running) {
             try {
-                Thread.sleep(100);
-                showResultGame();
-                if (!running) return;
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                running = false;
             }
+            showResultGame();
         }
     }
 

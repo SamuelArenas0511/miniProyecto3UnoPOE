@@ -11,7 +11,6 @@ public interface IMusic {
 
     public void playReverseSound();
     public void playSkipSound();
-    public void playSelectCardSound();
     public void playWildCardSound();
 
     public void playUnoSound();

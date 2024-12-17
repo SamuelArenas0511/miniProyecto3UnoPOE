@@ -1,6 +1,10 @@
 package org.example.eiscuno.model.game;
 
+import javafx.application.Platform;
+import org.example.eiscuno.controller.GameUnoController;
 import org.example.eiscuno.model.card.Card;
+import org.example.eiscuno.model.command.InvokerCommand;
+import org.example.eiscuno.model.command.specific_commads.ShowResultDeck;
 import org.example.eiscuno.model.deck.Deck;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
@@ -10,6 +14,10 @@ import java.util.Objects;
 /**
  * Represents a game of Uno.
  * This class manages the game logic and interactions between players, deck, and the table.
+ *  * @author Samuel Arenas Valencia
+ *  * @author Maria Juliana Saavedra
+ *  * @author Juan Esteban Rodriguez
+ *  * @version 1.0
  */
 public class GameUno implements IGameUno {
 
@@ -20,6 +28,7 @@ public class GameUno implements IGameUno {
     private String colorChoose;
     private boolean playerSingUno;
     private boolean machineSingUno;
+    private GameUnoController gameUnoController;
 
     /**
      * Constructs a new GameUno instance.
@@ -29,13 +38,14 @@ public class GameUno implements IGameUno {
      * @param deck          The deck of cards used in the game.
      * @param table         The table where cards are placed during the game.
      */
-    public GameUno(Player humanPlayer, Player machinePlayer, Deck deck, Table table) {
+    public GameUno(Player humanPlayer, Player machinePlayer, Deck deck, Table table, GameUnoController gameUnoController) {
         this.humanPlayer = humanPlayer;
         this.machinePlayer = machinePlayer;
         this.deck = deck;
         this.table = table;
         this.playerSingUno = false;
         this.machineSingUno = false;
+        this.gameUnoController = gameUnoController;
     }
 
     public GameUno(Player humanPlayer, Player machinePlayer, Table table) {
@@ -169,15 +179,32 @@ public class GameUno implements IGameUno {
      *
      * @return True if the deck is empty, indicating the game is over; otherwise, false.
      */
-    //@Override
-    public Boolean isGameOver(Player player) {
+    @Override
+    public void isGameOver(Player player) {
         if(player.getCardsPlayer().isEmpty()){
             System.out.println("Gamefinish playing");
         } else if (deck.isEmpty()) {
             System.out.println("Gamefinish deck");
+            if (getHumanPlayer().getCardsPlayer().size() <getMachinePlayer().getCardsPlayer().size()) {
+                Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, Boolean.TRUE)).invoke());
+            } else if (getHumanPlayer().getCardsPlayer().size() == getMachinePlayer().getCardsPlayer().size()) {
+                Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, null)).invoke());
+            } else {
+                Platform.runLater(() -> new InvokerCommand(new ShowResultDeck(gameUnoController, Boolean.FALSE)).invoke());
+            }
         }
-        return null;
     }
+
+    /**
+     * Determines if a given card can be played on the current card on the table according to the game rules.
+     * <p>
+     * This method checks if a card can be placed on the table by comparing its properties with the
+     * current card on the table. It handles special cases, such as WILD, FOUR_WILD, SKIP, TWO_WILD,
+     * and RESERVE cards, ensuring correct comparisons to prevent bugs.
+     *
+     * @param card The card to be checked for playability.
+     * @return A boolean value: true if the card can be played, false otherwise.
+     */
 
     public boolean isCardPlayable(Card card) {
         Card currentCard = table.getCurrentCardOnTheTable();
@@ -210,27 +237,57 @@ public class GameUno implements IGameUno {
                 Objects.equals(card.getType(), "WILD") || Objects.equals(card.getType(), "FOUR_WILD");
     }
 
+    /**
+     * Checks if the human player has declared "UNO".
+     *
+     * @return A boolean indicating whether the human player has declared "UNO".
+     */
     public boolean isPlayerSingUno() {
         return playerSingUno;
     }
 
+    /**
+     * Sets the flag indicating whether the human player has declared "UNO".
+     *
+     * @param playerSingUno A boolean value representing if the human player declared "UNO".
+     */
     public void setPlayerSingUno(boolean playerSingUno) {
         this.playerSingUno = playerSingUno;
     }
 
+    /**
+     * Checks if the machine player has declared "UNO".
+     *
+     * @return A boolean indicating whether the machine player has declared "UNO".
+     */
     public boolean isMachineSingUno() {
         return machineSingUno;
     }
 
+    /**
+     * Sets the flag indicating whether the machine player has declared "UNO".
+     *
+     * @param machineSingUno A boolean value representing if the machine player declared "UNO".
+     */
     public void setMachineSingUno(boolean machineSingUno) {
         this.machineSingUno = machineSingUno;
     }
 
+    /**
+     * Retrieves the human player object.
+     *
+     * @return The `Player` object representing the human player.
+     */
     @Override
     public Player getHumanPlayer() {
         return humanPlayer;
     }
 
+    /**
+     * Retrieves the machine player object.
+     *
+     * @return The `Player` object representing the machine player.
+     */
     public Player getMachinePlayer(){
         return machinePlayer;
     }

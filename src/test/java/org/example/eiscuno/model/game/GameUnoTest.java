@@ -19,16 +19,7 @@ import java.util.concurrent.CountDownLatch;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Unit tests for the {@link GameUno} class.
- *
- * This class contains tests to verify the functionality of the UNO game,
- * specifically for methods related to determining if a player can play a card
- * and ensuring that cards are properly placed on the table.
- *
- * @author Samuel Arenas Valencia, Maria Juliana Saavedra, Juan Esteban Rodriguez
- * @version 1.0
- */
+
 class GameUnoTest {
     private Player testHumanPlayer;
     private Player testMachinePlayer;
@@ -50,13 +41,6 @@ class GameUnoTest {
         this.gameUno = new GameUno(testHumanPlayer,testMachinePlayer,testTable);
     }
 
-    /**
-     * Tests the {@code isCardPlayable()} method in the {@link GameUno} class.
-     *
-     * Verifies whether a specific card can be played according to the game's rules.
-     * Adds a card to the table and checks if the human player can play the testCard2 card.
-     * Asserts that the method correctly identifies if the card is playable.
-     */
     @Test
     void testIsCardPlayable() {
         testTable.addCardOnTheTable(testCard);
@@ -65,14 +49,6 @@ class GameUnoTest {
         assertTrue(gameUno.isCardPlayable(testCard2));
     }
 
-    /**
-     * Tests the {@code playCard()} method in the {@link GameUno} class.
-     *
-     * Checks if a card is successfully played and placed on the table.
-     * After playing the card, the test verifies that:
-     * - The card is no longer in the human player's hand.
-     * - The current card on the table matches the card that was played.
-     */
     @Test
     void testCardHasBeenPlayed() {
         testTable.addCardOnTheTable(testCard);

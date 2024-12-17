@@ -1,7 +1,7 @@
 package org.example.eiscuno.model.deck;
 
 import org.example.eiscuno.model.exception.emptyDeckException;
-import org.example.eiscuno.model.factoryMethod.CardFactory;
+import org.example.eiscuno.model.factoryMethod.ICardFactory;
 import org.example.eiscuno.model.factoryMethod.UnoCardFactory;
 import org.example.eiscuno.model.unoenum.EISCUnoEnum;
 import org.example.eiscuno.model.card.Card;
@@ -14,7 +14,7 @@ import java.util.Stack;
  */
 public class Deck {
     public Stack<Card> deckOfCards;
-    private CardFactory cardFactory;
+    private ICardFactory cardFactory;
 
     /**
      * Constructs a new deck of Uno cards and initializes it.
@@ -53,7 +53,15 @@ public class Deck {
      * @throws IllegalStateException if the deck is empty
      */
     public Card takeCard() {
-        return deckOfCards.pop();
+        try{
+            if (deckOfCards.isEmpty()) {
+                throw new emptyDeckException("No hay más cartas en el mazo.");
+            }
+            return deckOfCards.pop();
+        }catch (emptyDeckException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
     /**

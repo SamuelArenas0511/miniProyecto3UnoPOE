@@ -19,7 +19,7 @@ import java.util.Objects;
  *  * @author Juan Esteban Rodriguez
  *  * @version 1.0
  */
-public class GameUno implements IGameUno {
+public class GameUno extends GameAdapter {
 
     private final Player humanPlayer;
     private final Player machinePlayer;
